@@ -37,16 +37,20 @@
 
 //  CVS Log
 //
-//  $Id: test_bench_top.v,v 1.3 2001-09-07 15:34:36 rudi Exp $
+//  $Id: test_bench_top.v,v 1.4 2001-10-19 04:47:31 rudi Exp $
 //
-//  $Date: 2001-09-07 15:34:36 $
-//  $Revision: 1.3 $
+//  $Date: 2001-10-19 04:47:31 $
+//  $Revision: 1.4 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.3  2001/09/07 15:34:36  rudi
+//
+//               Changed reset to active high.
+//
 //               Revision 1.2  2001/08/15 05:40:29  rudi
 //
 //               - Changed IO names to be more clear.
@@ -66,6 +70,8 @@
 //                        
 
 `include "wb_dma_defines.v"
+
+`define	CH_COUNT 4
 
 module test;
 
@@ -114,10 +120,10 @@ wire		wb1_stb_o;
 wire		wb1_ack_i;
 wire		wb1_err_i;
 wire		wb1_rty_i;
-reg	[`WDMA_CH_COUNT-1:0]	req_i;
-wire	[`WDMA_CH_COUNT-1:0]	ack_o;
-reg	[`WDMA_CH_COUNT-1:0]	nd_i;
-reg	[`WDMA_CH_COUNT-1:0]	rest_i;
+reg	[`CH_COUNT-1:0]	req_i;
+wire	[`CH_COUNT-1:0]	ack_o;
+reg	[`CH_COUNT-1:0]	nd_i;
+reg	[`CH_COUNT-1:0]	rest_i;
 wire		inta_o;
 wire		intb_o;
 
@@ -310,7 +316,21 @@ always #5 clk = ~clk;
 
 // Module Prototype
 
-wb_dma_top	u0(
+wb_dma_top
+	#(	4'hb,		// register file address
+		2'd1,		// Number of priorities (4)
+		`CH_COUNT,	// Number of channels
+		4'hf,
+		4'hf,
+		4'hf,
+		4'hf,
+		4'hf,
+		4'hf,
+		4'hf,
+		4'hf
+		)
+
+		u0(
 		.clk_i(		clk		),
 		.rst_i(		rst		),
 		.wb0s_data_i(	wb0s_data_i	),
