@@ -1,85 +1,129 @@
 
+all:	sim
+
 SHELL = /bin/sh
-#.QUIET
+MS="-s"
 
-DMA_TARGETS=	../../../rtl/verilog/wb_dma_ch_arb.v		\
-		../../../rtl/verilog/wb_dma_ch_pri_enc.v	\
-		../../../rtl/verilog/wb_dma_ch_sel.v		\
-		../../../rtl/verilog/wb_dma_top.v		\
-		../../../rtl/verilog/wb_dma_ch_rf.v		\
-		../../../rtl/verilog/wb_dma_rf.v		\
-		../../../rtl/verilog/wb_dma_wb_if.v		\
-		../../../rtl/verilog/wb_dma_wb_mast.v		\
-		../../../rtl/verilog/wb_dma_wb_slv.v		\
-		../../../rtl/verilog/wb_dma_de.v		\
-		../../../rtl/verilog/wb_dma_inc30r.v		\
+##########################################################################
+#
+# DUT Sources
+#
+##########################################################################
+DUT_SRC_DIR=../../../rtl/verilog
+_TARGETS_=	$(DUT_SRC_DIR)/wb_dma_ch_pri_enc.v	\
+		$(DUT_SRC_DIR)/wb_dma_ch_arb.v		\
+		$(DUT_SRC_DIR)/wb_dma_pri_enc_sub.v	\
+		$(DUT_SRC_DIR)/wb_dma_ch_sel.v		\
+		$(DUT_SRC_DIR)/wb_dma_top.v		\
+		$(DUT_SRC_DIR)/wb_dma_ch_rf.v		\
+		$(DUT_SRC_DIR)/wb_dma_rf.v		\
+		$(DUT_SRC_DIR)/wb_dma_wb_if.v		\
+		$(DUT_SRC_DIR)/wb_dma_wb_mast.v		\
+		$(DUT_SRC_DIR)/wb_dma_wb_slv.v		\
+		$(DUT_SRC_DIR)/wb_dma_de.v		\
+		$(DUT_SRC_DIR)/wb_dma_inc30r.v
 
+##########################################################################
+#
+# Test Bench Sources
+#
+##########################################################################
+_TOP_=test
+TB_SRC_DIR=../../../bench/verilog
+_TB_=		$(TB_SRC_DIR)/test_bench_top.v		\
+		$(TB_SRC_DIR)/wb_slv_model.v		\
+		$(TB_SRC_DIR)/wb_mast_model.v
 
-DMA_TB=		../../../bench/verilog/test_bench_top.v		\
-		../../../bench/verilog/wb_slv_model.v		\
-		../../../bench/verilog/wb_mast_model.v		\
+##########################################################################
+#
+# Misc Variables
+#
+##########################################################################
 
+INCDIR="-INCDIR ./$(DUT_SRC_DIR)/ -INCDIR ./$(TB_SRC_DIR)/"
+LOGF=-LOGFILE .nclog
+NCCOMMON=-CDSLIB ncwork/cds.lib -HDLVAR ncwork/hdl.var -NOCOPYRIGHT
 
-TOP=test
-INCDIR="-INCDIR ../../../rtl/verilog/ -INCDIR ../../../bench/verilog/"
-#ACCESS="-ACCESS +r"
-#WAVES=-DEFINE WAVES
+##########################################################################
+#
+# Make Targets
+#
+##########################################################################
 
-dmawxl:
-	verilog +incdir+verilog/ $(DMA_TARGETS) $(DMA_TB)
+ss:
+	signalscan -do waves/waves.do -waves waves/waves.trn &
 
-dmaw:
-	@$(MAKE) -s dma ACCESS="-ACCESS +r" WAVES="-DEFINE WAVES"
+simxl:
+	verilog +incdir+$(DUT_SRC_DIR) +incdir+$(TB_SRC_DIR)	\
+	$(_TARGETS_) $(_TB_)
 
-dmass:
-	signalscan -do waves/dma.do -waves waves/waves.trn &
+simw:
+	@$(MAKE) -s sim ACCESS="-ACCESS +r" WAVES="-DEFINE WAVES"
 
-dma:
-	@$(MAKE) -s vlog TARGETS="$(DMA_TARGETS) $(DMA_TB)" INCDIR=$(INCDIR) WAVES="$(WAVES)" TOP=test
-	@$(MAKE) -s elab ACCESS="$(ACCESS)" TOP=test
-	@$(MAKE) -s sim  TOP=test
-
-clean:
-	rm -f .nclog ./waves/*.dsn ./waves/*.trn ./ncwork/inca.linux.* ./ncwork/.inc*
-
-simx:
-	ncverilog +incdir+verilog +incdir+test_bench $(DMA_TARGETS) $(DMA_TB)
+sim:
+	@echo ""
+	@echo "----- Running NCVLOG ... ----------"
+	$(MAKE) $(MS) vlog				\
+		TARGETS="$(_TARGETS_)"			\
+		TB="$(_TB_)"				\
+		INCDIR=$(INCDIR)			\
+		WAVES="$(WAVES)"
+	@echo ""
+	@echo "----- Running NCELAB ... ----------"
+	$(MAKE) $(MS) elab				\
+		ACCESS="$(ACCESS)" TOP=$(_TOP_)
+	@echo ""
+	@echo "----- Running NCSIM ... ----------"
+	$(MAKE) $(MS) ncsim TOP=$(_TOP_)
+	@echo ""
 
 hal:
-	hal +incdir+./verilog/ -NOP -NOS -nocheck STYVAL:USEPRT:NOBLKN:DLNBLK $(DMA_TARGETS)
+	@echo ""
+	@echo "----- Running HAL ... ----------"
+	@hal	-NOP -NOS -nocheck STYVAL:USEPRT:NOBLKN:DLNBLK	\
+		+incdir+$(DUT_SRC_DIR) $(_TARGETS_)
+	@echo "----- DONE ... ----------"
 
-#################################################################################
+clean:
+	rm -rf	./waves/*.dsn ./waves/*.trn		\
+		ncwork/inc* ncwork/.inc* 		\
+		./verilog.* .nclog hal.log
+
+##########################################################################
 #
 # NCVLOG
 #
-#################################################################################
+##########################################################################
+
+vhdl:
+	ncvhdl $(NCCOMMON) $(LOGF) -APPEND_LOG			\
+		-WORK count -V93 hdl/counter.vhd
+	ncvhdl $(NCCOMMON) $(LOGF) -APPEND_LOG			\
+		-WORK work -V93 $(TARGETS)
 
 vlog:
-	@ncvlog -CDSLIB ncwork/cds.lib -HDLVAR ncwork/hdl.var	\
-		-WORK ncwork -NOCOPYRIGHT -UPDATE	\
-		-LOGFILE .nclog $(WAVES) $(TARGETS) $(INCDIR)
+	ncvlog $(NCCOMMON) $(LOGF) 				\
+		-WORK work $(WAVES) $(TB) $(TARGETS) $(INCDIR)
 
-#################################################################################
+##########################################################################
 #
 # NCELAB
 #
-#################################################################################
+##########################################################################
 
 elab:
-	@ncelab -CDSLIB ncwork/cds.lib -HDLVAR ncwork/hdl.var	 \
-		-WORK ncwork -NOCOPYRIGHT $(ACCESS) \
-		-LOGFILE .nclog -APPEND_LOG -NOTIMINGCHECKS	 \
-		ncwork.$(TOP)
+	ncelab	$(NCCOMMON) $(LOGF) -APPEND_LOG 		\
+		-WORK work $(ACCESS) -NOTIMINGCHECKS		\
+		work.$(TOP)
 
-#################################################################################
+##########################################################################
 #
 # NCSIM
 #
-#################################################################################
+##########################################################################
 
-sim:
-	@ncsim -CDSLIB ncwork/cds.lib -HDLVAR ncwork/hdl.var 	\
-		-NOCOPYRIGHT -STATUS -LOGFILE .nclog -EXIT	\
-		-APPEND_LOG -ERRORMAX 10 -NOKEY -UPDATE	\
-		ncwork.$(TOP)
+ncsim:
+	ncsim	$(NCCOMMON) $(LOGF) -APPEND_LOG			\
+		-EXIT -ERRORMAX 10 work.$(TOP)
+
 
