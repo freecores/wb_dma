@@ -11,8 +11,9 @@
 ////                                                             ////
 /////////////////////////////////////////////////////////////////////
 ////                                                             ////
-//// Copyright (C) 2001 Rudolf Usselmann                         ////
-////                    rudi@asics.ws                            ////
+//// Copyright (C) 2000-2002 Rudolf Usselmann                    ////
+////                         www.asics.ws                        ////
+////                         rudi@asics.ws                       ////
 ////                                                             ////
 //// This source file may be used and distributed without        ////
 //// restriction provided that this copyright statement is not   ////
@@ -37,16 +38,20 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_defines.v,v 1.4 2001-10-19 04:35:04 rudi Exp $
+//  $Id: wb_dma_defines.v,v 1.5 2002-02-01 01:54:45 rudi Exp $
 //
-//  $Date: 2001-10-19 04:35:04 $
-//  $Revision: 1.4 $
+//  $Date: 2002-02-01 01:54:45 $
+//  $Revision: 1.5 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.4  2001/10/19 04:35:04  rudi
+//
+//               - Made the core parameterized
+//
 //               Revision 1.3  2001/09/07 15:34:38  rudi
 //
 //               Changed reset to active high.

@@ -11,8 +11,9 @@
 ////                                                             ////
 /////////////////////////////////////////////////////////////////////
 ////                                                             ////
-//// Copyright (C) 2000 Rudolf Usselmann                         ////
-////                    rudi@asics.ws                            ////
+//// Copyright (C) 2000-2002 Rudolf Usselmann                    ////
+////                         www.asics.ws                        ////
+////                         rudi@asics.ws                       ////
 ////                                                             ////
 //// This source file may be used and distributed without        ////
 //// restriction provided that this copyright statement is not   ////
@@ -37,16 +38,20 @@
 
 //  CVS Log
 //
-//  $Id: wb_mast_model.v,v 1.2 2001-09-07 15:34:36 rudi Exp $
+//  $Id: wb_mast_model.v,v 1.3 2002-02-01 01:55:44 rudi Exp $
 //
-//  $Date: 2001-09-07 15:34:36 $
-//  $Revision: 1.2 $
+//  $Date: 2002-02-01 01:55:44 $
+//  $Revision: 1.3 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.2  2001/09/07 15:34:36  rudi
+//
+//               Changed reset to active high.
+//
 //               Revision 1.1  2001/07/29 08:57:02  rudi
 //
 //

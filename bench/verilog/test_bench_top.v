@@ -11,8 +11,9 @@
 ////                                                             ////
 /////////////////////////////////////////////////////////////////////
 ////                                                             ////
-//// Copyright (C) 2001 Rudolf Usselmann                         ////
-////                    rudi@asics.ws                            ////
+//// Copyright (C) 2000-2002 Rudolf Usselmann                    ////
+////                         www.asics.ws                        ////
+////                         rudi@asics.ws                       ////
 ////                                                             ////
 //// This source file may be used and distributed without        ////
 //// restriction provided that this copyright statement is not   ////
@@ -37,16 +38,20 @@
 
 //  CVS Log
 //
-//  $Id: test_bench_top.v,v 1.4 2001-10-19 04:47:31 rudi Exp $
+//  $Id: test_bench_top.v,v 1.5 2002-02-01 01:55:44 rudi Exp $
 //
-//  $Date: 2001-10-19 04:47:31 $
-//  $Revision: 1.4 $
+//  $Date: 2002-02-01 01:55:44 $
+//  $Revision: 1.5 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.4  2001/10/19 04:47:31  rudi
+//
+//               - Made the core parameterized
+//
 //               Revision 1.3  2001/09/07 15:34:36  rudi
 //
 //               Changed reset to active high.
@@ -220,7 +225,7 @@ initial
 
 	// HERE IS WHERE THE TEST CASES GO ...
 
-if(0)	// Full Regression Run
+if(1)	// Full Regression Run
    begin
 $display(" ......................................................");
 $display(" :                                                    :");
@@ -329,7 +334,6 @@ wb_dma_top
 		4'hf,
 		4'hf
 		)
-
 		u0(
 		.clk_i(		clk		),
 		.rst_i(		rst		),

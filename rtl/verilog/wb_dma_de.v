@@ -11,8 +11,9 @@
 ////                                                             ////
 /////////////////////////////////////////////////////////////////////
 ////                                                             ////
-//// Copyright (C) 2001 Rudolf Usselmann                         ////
-////                    rudi@asics.ws                            ////
+//// Copyright (C) 2000-2002 Rudolf Usselmann                    ////
+////                         www.asics.ws                        ////
+////                         rudi@asics.ws                       ////
 ////                                                             ////
 //// This source file may be used and distributed without        ////
 //// restriction provided that this copyright statement is not   ////
@@ -37,16 +38,22 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_de.v,v 1.2 2001-08-15 05:40:30 rudi Exp $
+//  $Id: wb_dma_de.v,v 1.3 2002-02-01 01:54:45 rudi Exp $
 //
-//  $Date: 2001-08-15 05:40:30 $
-//  $Revision: 1.2 $
+//  $Date: 2002-02-01 01:54:45 $
+//  $Revision: 1.3 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.2  2001/08/15 05:40:30  rudi
+//
+//               - Changed IO names to be more clear.
+//               - Uniquifyed define names to be core specific.
+//               - Added Section 3.10, describing DMA restart.
+//
 //               Revision 1.1  2001/07/29 08:57:02  rudi
 //
 //
@@ -260,8 +267,8 @@ always @(posedge clk)
 
 // 30 Bit Incrementor (registered)
 wb_dma_inc30r u0(	.clk(	clk		),
-		.in(	adr0_cnt	),
-		.out(	adr0_cnt_next1 	)	);
+			.in(	adr0_cnt	),
+			.out(	adr0_cnt_next1 	)	);
 
 assign adr0_cnt_next[1:0] = adr0_cnt_next1[1:0];
 assign adr0_cnt_next[2] = am0[4] ? adr0_cnt_next1[2] : adr0_cnt[2];
@@ -302,8 +309,8 @@ always @(posedge clk)
 
 // 30 Bit Incrementor (registered)
 wb_dma_inc30r u1(	.clk(	clk		),
-		.in(	adr1_cnt	),
-		.out(	adr1_cnt_next1 	)	);
+			.in(	adr1_cnt	),
+			.out(	adr1_cnt_next1 	)	);
 
 assign adr1_cnt_next[1:0] = adr1_cnt_next1[1:0];
 assign adr1_cnt_next[2] = am1[4] ? adr1_cnt_next1[2] : adr1_cnt[2];
@@ -365,12 +372,10 @@ always @(posedge clk)
 	tsz_dec <= #1 read & !read_r;
 
 //always @(posedge clk)
-//	adr0_inc <= #1 rd_ack & read_r;
 always @(rd_ack or read_r)
 	adr0_inc = rd_ack & read_r;
 
 //always @(posedge clk)
-//	adr1_inc <= #1 wr_ack & write_r;
 always @(wr_ack or write_r)
 	adr1_inc = wr_ack & write_r;
 
