@@ -29,7 +29,7 @@ append synthetic_library $snps "/libraries/syn/dw05.sldb "
 append synthetic_library $snps "/libraries/syn/dw06.sldb "
 append synthetic_library $snps "/libraries/syn/dw07.sldb "
 
-set target_library { umcl18u250t2_typ.db }
+set target_library { umcl18u250t2_wc.db }
 set link_library ""
 append link_library  $target_library " "  $synthetic_library
 set symbol_library { umcl18u250t2.sdb }

@@ -102,8 +102,8 @@ set_ultra_optimization -f
 # Compile Design
 
 echo "+++++++++ Starting Compile ..."                           >> $log_file
-#compile -map_effort low -area_effort low                       >> $log_file
-compile -map_effort high -area_effort high -boundary_optimization -auto_ungroup >> $log_file
+compile -map_effort low -area_effort low                       >> $log_file
+#compile -map_effort high -area_effort high -boundary_optimization -auto_ungroup >> $log_file
 
 # ==============================================
 # Write Out the optimized design
