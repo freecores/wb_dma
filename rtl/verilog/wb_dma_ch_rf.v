@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_ch_rf.v,v 1.1 2001-07-29 08:57:02 rudi Exp $
+//  $Id: wb_dma_ch_rf.v,v 1.2 2001-08-15 05:40:30 rudi Exp $
 //
-//  $Date: 2001-07-29 08:57:02 $
-//  $Revision: 1.1 $
+//  $Date: 2001-08-15 05:40:30 $
+//  $Revision: 1.2 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.1  2001/07/29 08:57:02  rudi
+//
+//
+//               1) Changed Directory Structure
+//               2) Added restart signal (REST)
+//
 //               Revision 1.3  2001/06/14 08:50:01  rudi
 //
 //               Changed Module Name to match file name.
@@ -199,7 +205,7 @@ assign ch_csr		= {9'h0, int_src_r, ch_csr_r3, rest_en, ch_csr_r2,
 				ch_err, ch_done, ch_busy, 1'b0, ch_csr_r[8:1], ch_enable};
 assign ch_txsz		= {5'h0, ch_chk_sz_r, ch_sz_inf, 3'h0, ch_tot_sz_r};
 
-assign ch_enable	= ch_csr_r[0] & (HAVE_CBUF ? !ch_dis : 1'b1);
+assign ch_enable	= ch_csr_r[`WDMA_CH_EN] & (HAVE_CBUF ? !ch_dis : 1'b1);
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -219,7 +225,7 @@ assign pointer_we	= wb_rf_we & (wb_rf_adr[7:3] == CH_ADR) & (wb_rf_adr[2:0] == 3
 assign sw_pointer_we	= wb_rf_we & (wb_rf_adr[7:3] == CH_ADR) & (wb_rf_adr[2:0] == 3'h7);
 
 assign ch_done_we	= (((ch_sel==CH_NO) & dma_done_all) | ndnr) &
-			  (ch_csr[`USE_ED] ? ch_eol : !ch_csr[`ARS]);
+			  (ch_csr[`WDMA_USE_ED] ? ch_eol : !ch_csr[`WDMA_ARS]);
 assign chunk_done_we	= (ch_sel==CH_NO) & dma_done;
 assign ch_err_we	= (ch_sel==CH_NO) & dma_err;
 assign ch_csr_dewe	= de_csr_we & (ch_sel==CH_NO);
@@ -233,7 +239,7 @@ assign this_ptr_set	= ptr_set & (ch_sel==CH_NO);
 always @(posedge clk)
 	ch_rl <= #1	HAVE_ARS & (
 			(rest_en & dma_rest) |
-			((ch_sel==CH_NO) & dma_done_all & ch_csr[`ARS] & !ch_csr[`USE_ED])
+			((ch_sel==CH_NO) & dma_done_all & ch_csr[`WDMA_ARS] & !ch_csr[`WDMA_USE_ED])
 			);
 
 // ---------------------------------------------------
@@ -256,7 +262,7 @@ always @(posedge clk or negedge rst)
 	else
 	if(HAVE_ED)
 	   begin
-		if(ch_csr_dewe)		ch_eol <= #1 de_csr[`ED_EOL];
+		if(ch_csr_dewe)		ch_eol <= #1 de_csr[`WDMA_ED_EOL];
 		else
 		if(ch_done_we)		ch_eol <= #1 1'b0;
 	   end
@@ -287,7 +293,7 @@ always @(posedge clk or negedge rst)
 	if(ch_csr_we)		ch_csr_r <= #1 wb_rf_din[8:0];
 	else
 	   begin
-		if(ch_done_we)	ch_csr_r[`CH_EN] <= #1 1'b0;
+		if(ch_done_we)	ch_csr_r[`WDMA_CH_EN] <= #1 1'b0;
 		if(ch_csr_dewe)	ch_csr_r[4:1] <= #1 de_csr[19:16];
 	   end
 
@@ -295,7 +301,7 @@ always @(posedge clk or negedge rst)
 always @(posedge clk or negedge rst)
 	if(!rst)		ch_done <= #1 1'b0;
 	else
-	if(ch_csr_we)		ch_done <= #1 !wb_rf_din[`CH_EN];
+	if(ch_csr_we)		ch_done <= #1 !wb_rf_din[`WDMA_CH_EN];
 	else
 	if(ch_done_we)		ch_done <= #1 1'b1;
 
@@ -305,7 +311,7 @@ always @(posedge clk)
 
 // stop bit
 always @(posedge clk)
-	ch_stop <= #1 ch_csr_we & wb_rf_din[`STOP];
+	ch_stop <= #1 ch_csr_we & wb_rf_din[`WDMA_STOP];
 
 // error bit
 always @(posedge clk or negedge rst)
@@ -371,12 +377,6 @@ always @(posedge clk)
 		{ch_chk_sz_r, ch_tot_sz_r} <= #1 ch_txsz_s;
 
 // txsz shadow register
-/*
-always @(posedge clk)
-	if((ch_txsz_we | (rest_en & ch_txsz_dewe & de_fetch_descr) )
-		& HAVE_ARS)	ch_txsz_s <= #1 {wb_rf_din[26:16], wb_rf_din[11:0]};
-*/
-
 always @(posedge clk)
 	if(HAVE_ARS)
 	   begin
@@ -386,9 +386,6 @@ always @(posedge clk)
 		if(rest_en & ch_txsz_dewe & de_fetch_descr)
 				ch_txsz_s[11:0] <= #1 de_txsz[11:0];
 	   end
-
-
-
 
 // Infinite Size indicator
 always @(posedge clk)
@@ -404,12 +401,6 @@ always @(posedge clk)
 	if(ch_rl)		ch_adr0_r <= #1 ch_adr0_s;
 
 // Adr0 shadow register
-/*
-always @(posedge clk)
-	if((ch_adr0_we | (rest_en & ch_adr0_dewe & de_fetch_descr) )
-		& HAVE_ARS)	ch_adr0_s <= #1 wb_rf_din[31:2];
-*/
-
 always @(posedge clk)
 	if(HAVE_ARS)
 	   begin
@@ -418,7 +409,6 @@ always @(posedge clk)
 		if(rest_en & ch_adr0_dewe & de_fetch_descr)
 				ch_adr0_s <= #1 de_adr0[31:2];
 	   end
-
 
 // ---------------------------------------------------
 // AM0
@@ -437,12 +427,6 @@ always @(posedge clk)
 	if(ch_rl)		ch_adr1_r <= #1 ch_adr1_s;
 
 // Adr1 shadow register
-/*
-always @(posedge clk)
-	if((ch_adr1_we | (rest_en & ch_adr1_dewe & de_fetch_descr) )
-		& HAVE_ARS)	ch_adr1_s <= #1 wb_rf_din[31:2];
-*/
-
 always @(posedge clk)
 	if(HAVE_ARS)
 	   begin

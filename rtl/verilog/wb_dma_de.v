@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_de.v,v 1.1 2001-07-29 08:57:02 rudi Exp $
+//  $Id: wb_dma_de.v,v 1.2 2001-08-15 05:40:30 rudi Exp $
 //
-//  $Date: 2001-07-29 08:57:02 $
-//  $Revision: 1.1 $
+//  $Date: 2001-08-15 05:40:30 $
+//  $Revision: 1.2 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.1  2001/07/29 08:57:02  rudi
+//
+//
+//               1) Changed Directory Structure
+//               2) Added restart signal (REST)
+//
 //               Revision 1.3  2001/06/13 02:26:48  rudi
 //
 //
@@ -232,7 +238,7 @@ reg		ptr_set;
 wire		a0_inc_en = csr[4];	// Source Address (Adr 0) increment enable
 wire		a1_inc_en = csr[3];	// Dest. Address (Adr 1) increment enable
 wire		ptr_valid = pointer[0];
-wire		use_ed = csr[`USE_ED];
+wire		use_ed = csr[`WDMA_USE_ED];
 
 reg		mast0_drdy_r;
 reg		paused;
@@ -480,7 +486,7 @@ always @(state or pause_req or dma_abort_r or de_start or rd_ack or wr_ack or
 	     begin
 		if(pause_req)			next_state = PAUSE;
 		else
-		if(de_start & !csr[`ERR])
+		if(de_start & !csr[`WDMA_ERR])
 		   begin
 			if(use_ed & !ptr_valid)	next_state = LD_DESC1;
 			else			next_state = READ;
@@ -527,7 +533,7 @@ always @(state or pause_req or dma_abort_r or de_start or rd_ack or wr_ack or
 		de_txsz_we = 1'b1;
 		de_adr0_we = 1'b1;
 		de_adr1_we = 1'b1;
-		if(use_ed & csr[`WRB] & nd)
+		if(use_ed & csr[`WDMA_WRB] & nd)
 		   begin
 			m0_we = 1'b1;
 			m0_go = 1'b1;

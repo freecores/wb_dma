@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: tests.v,v 1.1 2001-07-29 08:57:02 rudi Exp $
+//  $Id: tests.v,v 1.2 2001-08-15 05:40:29 rudi Exp $
 //
-//  $Date: 2001-07-29 08:57:02 $
-//  $Revision: 1.1 $
+//  $Date: 2001-08-15 05:40:29 $
+//  $Revision: 1.2 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.1  2001/07/29 08:57:02  rudi
+//
+//
+//               1) Changed Directory Structure
+//               2) Added restart signal (REST)
+//
 //               Revision 1.1.1.1  2001/03/19 13:12:39  rudi
 //               Initial Release
 //
@@ -116,7 +122,6 @@ begin
 	$display("Total Size: %0d, Chunk Size: %0d, Slave Delay: %0d",
 		tot_sz, chunk_sz, del);
 
-
 	ack_cnt_clr = 1;
 	@(posedge clk);
 	ack_cnt_clr = 0;
@@ -149,8 +154,6 @@ begin
 	s0.mem[15] = 32'h0000_0000;
 
 
-
-
 	m0.wb_wr1(`REG_BASE + `INT_MASKA,4'hf,32'hffff_ffff);
 
 	m0.wb_wr1(`REG_BASE + `PTR0, 4'hf, 32'h0000_0020);
@@ -159,7 +162,6 @@ begin
 	m0.wb_wr1(`REG_BASE + `CH0_ADR1,4'hf,32'h0000_4000);
 
 	m0.wb_wr1(`REG_BASE + `CH0_CSR,4'hf,
-		    //{25'h0000001, 4'b0011, 2'b00, 1'b1});
 	{15'h0002, 3'b000, 1'b0, 6'h1, 4'b0011, 2'b00, 1'b1});
 
 
@@ -169,10 +171,7 @@ begin
 	m0.wb_wr1(`REG_BASE + `CH1_ADR1,4'hf,32'h0000_4000);
 
 	m0.wb_wr1(`REG_BASE + `CH1_CSR,4'hf,
-			//{25'h0000001, 4'b0011, 2'b00, 1'b1});
 	{15'h0002, 3'b000, 1'b0, 6'h1, 4'b0011, 2'b00, 1'b1});
-
-
 
 
 for(ii=0;ii<2;ii=ii+1)
@@ -236,9 +235,6 @@ begin
 	end
 
 end
-
-
-
 
 	if(ack_cnt != ((tot_sz*4)+(4*2))*2 )
 	   begin
@@ -436,16 +432,16 @@ $display("a: %0d", a);
 	s1.fill_mem(1);
 
 	m0.wb_wr1(`REG_BASE + `CH0_CSR,4'hf,
-			{17'h00000, pri[1:0], 6'h0, 4'b0011, mode[1:0], 1'b0});
+		{17'h00000, pri[1:0], 6'h0, 4'b0011, mode[1:0], 1'b0});
 
 	m0.wb_wr1(`REG_BASE + `CH1_CSR,4'hf,
-			{17'h00000, pri[3:2], 6'h0, 4'b0011, mode[1:0], 1'b0});
+		{17'h00000, pri[3:2], 6'h0, 4'b0011, mode[1:0], 1'b0});
 
 	m0.wb_wr1(`REG_BASE + `CH2_CSR,4'hf,
-			{17'h00000, pri[5:4], 6'h0, 4'b0011, mode[1:0], 1'b0});
+		{17'h00000, pri[5:4], 6'h0, 4'b0011, mode[1:0], 1'b0});
 
 	m0.wb_wr1(`REG_BASE + `CH3_CSR,4'hf,
-			{17'h00000, pri[7:6], 6'h0, 4'b0011, mode[1:0], 1'b0});
+		{17'h00000, pri[7:6], 6'h0, 4'b0011, mode[1:0], 1'b0});
 
 	m0.wb_wr1(`REG_BASE + `INT_MASKA,4'hf,32'hffff_ffff);
 
@@ -465,17 +461,22 @@ $display("a: %0d", a);
 	m0.wb_wr1(`REG_BASE + `CH3_ADR0,4'hf,32'h0000_0180);
 	m0.wb_wr1(`REG_BASE + `CH3_ADR1,4'hf,32'h0000_4180);
 
+
 	m0.wb_wr1(`REG_BASE + `CH0_CSR,4'hf,
-			{15'h0002, 2'b00, pri[1:0], 6'h0, 4'b0011, mode[1:0], 1'b1});
+		{12'h000, 3'b010, 1'b0, 1'b0, pri[1:0], 6'h0, 4'b0011, mode[1:0], 1'b1});
+
+	        //{15'h0002, 3'b000, 1'b0, 6'h1, 4'b0011, 2'b00, 1'b1});
 
 	m0.wb_wr1(`REG_BASE + `CH1_CSR,4'hf,
-			{15'h0002, 2'b00, pri[3:2], 6'h0, 4'b0011, mode[1:0], 1'b1});
+		{12'h000, 3'b010, 1'b0, 1'b0, pri[3:2], 6'h0, 4'b0011, mode[1:0], 1'b1});
 
 	m0.wb_wr1(`REG_BASE + `CH2_CSR,4'hf,
-			{15'h0002, 2'b00, pri[5:4], 6'h0, 4'b0011, mode[1:0], 1'b1});
+		{12'h000, 3'b010, 1'b0, 1'b0, pri[5:4], 6'h0, 4'b0011, mode[1:0], 1'b1});
+
+
 
 	m0.wb_wr1(`REG_BASE + `CH3_CSR,4'hf,
-			{15'h0002, 2'b00, pri[7:6], 6'h0, 4'b0011, mode[1:0], 1'b1});
+		{12'h0000, 3'b010, 1'b0, 1'b0, pri[7:6], 6'h0, 4'b0011, mode[1:0], 1'b1});
 
 	repeat(1)	@(posedge clk);
 
@@ -485,38 +486,35 @@ $display("a: %0d", a);
 	finish = 8'hxx;
 
 	while(ptr!=4)
-	begin
+	   begin
+		while(!inta_o)	@(posedge clk);
+		m0.wb_rd1(`REG_BASE + `INT_SRCA, 4'hf, d0);
 
-	while(!inta_o)	@(posedge clk);
-	m0.wb_rd1(`REG_BASE + `INT_SRCA, 4'hf, d0);
+		if(d0[0])	d0[1:0] = 0;
+		else
+		if(d0[1])	d0[1:0] = 1;
+		else
+		if(d0[2])	d0[1:0] = 2;
+		else
+		if(d0[3])	d0[1:0] = 3;
 
-	if(d0[0])	d0[1:0] = 0;
-	else
-	if(d0[1])	d0[1:0] = 1;
-	else
-	if(d0[2])	d0[1:0] = 2;
-	else
-	if(d0[3])	d0[1:0] = 3;
+		case(ptr)
+		   0: finish[7:6] = d0[1:0];
+		   1: finish[5:4] = d0[1:0];
+		   2: finish[3:2] = d0[1:0];
+		   3: finish[1:0] = d0[1:0];
+		endcase
 
-	case(ptr)
-	   0: finish[7:6] = d0[1:0];
-	   1: finish[5:4] = d0[1:0];
-	   2: finish[3:2] = d0[1:0];
-	   3: finish[1:0] = d0[1:0];
-	endcase
+		case(d0[1:0])
+		   0: m0.wb_rd1(`REG_BASE + `CH0_CSR, 4'hf, d0);
+		   1: m0.wb_rd1(`REG_BASE + `CH1_CSR, 4'hf, d0);
+		   2: m0.wb_rd1(`REG_BASE + `CH2_CSR, 4'hf, d0);
+		   3: m0.wb_rd1(`REG_BASE + `CH3_CSR, 4'hf, d0);
+		endcase
 
-	case(d0[1:0])
-	   0: m0.wb_rd1(`REG_BASE + `CH0_CSR, 4'hf, d0);
-	   1: m0.wb_rd1(`REG_BASE + `CH1_CSR, 4'hf, d0);
-	   2: m0.wb_rd1(`REG_BASE + `CH2_CSR, 4'hf, d0);
-	   3: m0.wb_rd1(`REG_BASE + `CH3_CSR, 4'hf, d0);
-	endcase
-
-	ptr=ptr+1;
-	repeat(2)	@(posedge clk);
-
-
-	end
+		ptr=ptr+1;
+		repeat(4)	@(posedge clk);
+	   end
 
 
 	if(finish !== order)
@@ -541,8 +539,6 @@ $display("a: %0d", a);
 			error_cnt = error_cnt + 1;
 		   end
 	   end
-
-
 
 	if(ack_cnt != ((tot_sz*4*2)) )
 	   begin

@@ -37,16 +37,21 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_ch_pri_enc.v,v 1.2 2001-08-07 08:00:43 rudi Exp $
+//  $Id: wb_dma_ch_pri_enc.v,v 1.3 2001-08-15 05:40:30 rudi Exp $
 //
-//  $Date: 2001-08-07 08:00:43 $
-//  $Revision: 1.2 $
+//  $Date: 2001-08-15 05:40:30 $
+//  $Revision: 1.3 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.2  2001/08/07 08:00:43  rudi
+//
+//
+//               Split up priority encoder modules to separate files
+//
 //               Revision 1.1  2001/07/29 08:57:02  rudi
 //
 //
@@ -110,7 +115,7 @@ wire	[7:0]	pri28_out, pri29_out, pri30_out;
 wire	[7:0]	pri_out_tmp;
 reg	[2:0]	pri_out;
 
-`ifdef HAVE_CH1
+`ifdef WDMA_HAVE_CH1
 wb_dma_pri_enc_sub u0(
 		.valid(		valid[0]	),
 		.pri_in(	pri0		),
@@ -127,7 +132,7 @@ assign pri0_out = 0;
 assign pri1_out = 0;
 `endif
 
-`ifdef HAVE_CH2
+`ifdef WDMA_HAVE_CH2
 wb_dma_pri_enc_sub u2(
 		.valid(		valid[2]	),
 		.pri_in(	pri2		),
@@ -137,7 +142,7 @@ wb_dma_pri_enc_sub u2(
 assign pri2_out = 0;
 `endif
 
-`ifdef HAVE_CH3
+`ifdef WDMA_HAVE_CH3
 wb_dma_pri_enc_sub u3(
 		.valid(		valid[3]	),
 		.pri_in(	pri3		),
@@ -147,7 +152,7 @@ wb_dma_pri_enc_sub u3(
 assign pri3_out = 0;
 `endif
 
-`ifdef HAVE_CH4
+`ifdef WDMA_HAVE_CH4
 wb_dma_pri_enc_sub u4(
 		.valid(		valid[4]	),
 		.pri_in(	pri4		),
@@ -157,7 +162,7 @@ wb_dma_pri_enc_sub u4(
 assign pri4_out = 0;
 `endif
 
-`ifdef HAVE_CH5
+`ifdef WDMA_HAVE_CH5
 wb_dma_pri_enc_sub u5(
 		.valid(		valid[5]	),
 		.pri_in(	pri5		),
@@ -167,7 +172,7 @@ wb_dma_pri_enc_sub u5(
 assign pri5_out = 0;
 `endif
 
-`ifdef HAVE_CH6
+`ifdef WDMA_HAVE_CH6
 wb_dma_pri_enc_sub u6(
 		.valid(		valid[6]	),
 		.pri_in(	pri6		),
@@ -177,7 +182,7 @@ wb_dma_pri_enc_sub u6(
 assign pri6_out = 0;
 `endif
 
-`ifdef HAVE_CH7
+`ifdef WDMA_HAVE_CH7
 wb_dma_pri_enc_sub u7(
 		.valid(		valid[7]	),
 		.pri_in(	pri7		),
@@ -187,7 +192,7 @@ wb_dma_pri_enc_sub u7(
 assign pri7_out = 0;
 `endif
 
-`ifdef HAVE_CH8
+`ifdef WDMA_HAVE_CH8
 wb_dma_pri_enc_sub u8(
 		.valid(		valid[8]	),
 		.pri_in(	pri8		),
@@ -197,7 +202,7 @@ wb_dma_pri_enc_sub u8(
 assign pri8_out = 0;
 `endif
 
-`ifdef HAVE_CH9
+`ifdef WDMA_HAVE_CH9
 wb_dma_pri_enc_sub u9(
 		.valid(		valid[9]	),
 		.pri_in(	pri9		),
@@ -207,7 +212,7 @@ wb_dma_pri_enc_sub u9(
 assign pri9_out = 0;
 `endif
 
-`ifdef HAVE_CH10
+`ifdef WDMA_HAVE_CH10
 wb_dma_pri_enc_sub u10(
 		.valid(		valid[10]	),
 		.pri_in(	pri10		),
@@ -217,7 +222,7 @@ wb_dma_pri_enc_sub u10(
 assign pri10_out = 0;
 `endif
 
-`ifdef HAVE_CH11
+`ifdef WDMA_HAVE_CH11
 wb_dma_pri_enc_sub u11(
 		.valid(		valid[11]	),
 		.pri_in(	pri11		),
@@ -227,7 +232,7 @@ wb_dma_pri_enc_sub u11(
 assign pri11_out = 0;
 `endif
 
-`ifdef HAVE_CH12
+`ifdef WDMA_HAVE_CH12
 wb_dma_pri_enc_sub u12(
 		.valid(		valid[12]	),
 		.pri_in(	pri12		),
@@ -237,7 +242,7 @@ wb_dma_pri_enc_sub u12(
 assign pri12_out = 0;
 `endif
 
-`ifdef HAVE_CH13
+`ifdef WDMA_HAVE_CH13
 wb_dma_pri_enc_sub u13(
 		.valid(		valid[13]	),
 		.pri_in(	pri13		),
@@ -247,7 +252,7 @@ wb_dma_pri_enc_sub u13(
 assign pri13_out = 0;
 `endif
 
-`ifdef HAVE_CH14
+`ifdef WDMA_HAVE_CH14
 wb_dma_pri_enc_sub u14(
 		.valid(		valid[14]	),
 		.pri_in(	pri14		),
@@ -257,7 +262,7 @@ wb_dma_pri_enc_sub u14(
 assign pri14_out = 0;
 `endif
 
-`ifdef HAVE_CH15
+`ifdef WDMA_HAVE_CH15
 wb_dma_pri_enc_sub u15(
 		.valid(		valid[15]	),
 		.pri_in(	pri15		),
@@ -267,7 +272,7 @@ wb_dma_pri_enc_sub u15(
 assign pri15_out = 0;
 `endif
 
-`ifdef HAVE_CH16
+`ifdef WDMA_HAVE_CH16
 wb_dma_pri_enc_sub u16(
 		.valid(		valid[16]	),
 		.pri_in(	pri16		),
@@ -277,7 +282,7 @@ wb_dma_pri_enc_sub u16(
 assign pri16_out = 0;
 `endif
 
-`ifdef HAVE_CH17
+`ifdef WDMA_HAVE_CH17
 wb_dma_pri_enc_sub u17(
 		.valid(		valid[17]	),
 		.pri_in(	pri17		),
@@ -287,7 +292,7 @@ wb_dma_pri_enc_sub u17(
 assign pri17_out = 0;
 `endif
 
-`ifdef HAVE_CH18
+`ifdef WDMA_HAVE_CH18
 wb_dma_pri_enc_sub u18(
 		.valid(		valid[18]	),
 		.pri_in(	pri18		),
@@ -297,7 +302,7 @@ wb_dma_pri_enc_sub u18(
 assign pri18_out = 0;
 `endif
 
-`ifdef HAVE_CH19
+`ifdef WDMA_HAVE_CH19
 wb_dma_pri_enc_sub u19(
 		.valid(		valid[19]	),
 		.pri_in(	pri19		),
@@ -307,7 +312,7 @@ wb_dma_pri_enc_sub u19(
 assign pri19_out = 0;
 `endif
 
-`ifdef HAVE_CH20
+`ifdef WDMA_HAVE_CH20
 wb_dma_pri_enc_sub u20(
 		.valid(		valid[20]	),
 		.pri_in(	pri20		),
@@ -317,7 +322,7 @@ wb_dma_pri_enc_sub u20(
 assign pri20_out = 0;
 `endif
 
-`ifdef HAVE_CH21
+`ifdef WDMA_HAVE_CH21
 wb_dma_pri_enc_sub u21(
 		.valid(		valid[21]	),
 		.pri_in(	pri21		),
@@ -327,7 +332,7 @@ wb_dma_pri_enc_sub u21(
 assign pri21_out = 0;
 `endif
 
-`ifdef HAVE_CH22
+`ifdef WDMA_HAVE_CH22
 wb_dma_pri_enc_sub u22(
 		.valid(		valid[22]	),
 		.pri_in(	pri22		),
@@ -337,7 +342,7 @@ wb_dma_pri_enc_sub u22(
 assign pri22_out = 0;
 `endif
 
-`ifdef HAVE_CH23
+`ifdef WDMA_HAVE_CH23
 wb_dma_pri_enc_sub u23(
 		.valid(		valid[23]	),
 		.pri_in(	pri23		),
@@ -347,7 +352,7 @@ wb_dma_pri_enc_sub u23(
 assign pri23_out = 0;
 `endif
 
-`ifdef HAVE_CH24
+`ifdef WDMA_HAVE_CH24
 wb_dma_pri_enc_sub u24(
 		.valid(		valid[24]	),
 		.pri_in(	pri24		),
@@ -357,7 +362,7 @@ wb_dma_pri_enc_sub u24(
 assign pri24_out = 0;
 `endif
 
-`ifdef HAVE_CH25
+`ifdef WDMA_HAVE_CH25
 wb_dma_pri_enc_sub u25(
 		.valid(		valid[25]	),
 		.pri_in(	pri25		),
@@ -367,7 +372,7 @@ wb_dma_pri_enc_sub u25(
 assign pri25_out = 0;
 `endif
 
-`ifdef HAVE_CH26
+`ifdef WDMA_HAVE_CH26
 wb_dma_pri_enc_sub u26(
 		.valid(		valid[26]	),
 		.pri_in(	pri26		),
@@ -377,7 +382,7 @@ wb_dma_pri_enc_sub u26(
 assign pri26_out = 0;
 `endif
 
-`ifdef HAVE_CH27
+`ifdef WDMA_HAVE_CH27
 wb_dma_pri_enc_sub u27(
 		.valid(		valid[27]	),
 		.pri_in(	pri27		),
@@ -387,7 +392,7 @@ wb_dma_pri_enc_sub u27(
 assign pri27_out = 0;
 `endif
 
-`ifdef HAVE_CH28
+`ifdef WDMA_HAVE_CH28
 wb_dma_pri_enc_sub u28(
 		.valid(		valid[28]	),
 		.pri_in(	pri28		),
@@ -397,7 +402,7 @@ wb_dma_pri_enc_sub u28(
 assign pri28_out = 0;
 `endif
 
-`ifdef HAVE_CH29
+`ifdef WDMA_HAVE_CH29
 wb_dma_pri_enc_sub u29(
 		.valid(		valid[29]	),
 		.pri_in(	pri29		),
@@ -407,7 +412,7 @@ wb_dma_pri_enc_sub u29(
 assign pri29_out = 0;
 `endif
 
-`ifdef HAVE_CH30
+`ifdef WDMA_HAVE_CH30
 wb_dma_pri_enc_sub u30(
 		.valid(		valid[30]	),
 		.pri_in(	pri30		),
@@ -427,7 +432,7 @@ assign pri_out_tmp =	pri0_out | pri1_out | pri2_out | pri3_out |
 			pri28_out | pri29_out | pri30_out;
 
 always @(posedge clk)
-`ifdef PRI_8
+`ifdef WDMA_PRI_8
 	if(pri_out_tmp[7])	pri_out <= #1 3'h7;
 	else
 	if(pri_out_tmp[6])	pri_out <= #1 3'h6;
@@ -441,7 +446,7 @@ always @(posedge clk)
 	if(pri_out_tmp[2])	pri_out <= #1 3'h2;
 	else
 `endif
-`ifdef PRI_4
+`ifdef WDMA_PRI_4
 	if(pri_out_tmp[3])	pri_out <= #1 3'h3;
 	else
 	if(pri_out_tmp[2])	pri_out <= #1 3'h2;

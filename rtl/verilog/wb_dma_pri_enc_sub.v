@@ -37,16 +37,21 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_pri_enc_sub.v,v 1.1 2001-08-07 08:00:43 rudi Exp $
+//  $Id: wb_dma_pri_enc_sub.v,v 1.2 2001-08-15 05:40:30 rudi Exp $
 //
-//  $Date: 2001-08-07 08:00:43 $
-//  $Revision: 1.1 $
+//  $Date: 2001-08-15 05:40:30 $
+//  $Revision: 1.2 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.1  2001/08/07 08:00:43  rudi
+//
+//
+//               Split up priority encoder modules to separate files
+//
 //
 //
 //
@@ -67,7 +72,7 @@ output	[7:0]	pri_out;
 
 reg	[7:0]	pri_out;
 
-`ifdef PRI_8
+`ifdef WDMA_PRI_8
 always @(valid or pri_in)
 	if(!valid)		pri_out = 8'b0000_0001;
 	else
@@ -86,7 +91,7 @@ always @(valid or pri_in)
 	if(pri_in==3'h6)	pri_out = 8'b0100_0000;
 	else			pri_out = 8'b1000_0000;
 `else
-`ifdef PRI_4
+`ifdef WDMA_PRI_4
 always @(valid or pri_in)
 	if(!valid)		pri_out = 8'b0000_0001;
 	else

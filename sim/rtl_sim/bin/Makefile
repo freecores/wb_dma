@@ -2,7 +2,7 @@
 all:	sim
 
 SHELL = /bin/sh
-MS="-s"
+MS=-s
 
 ##########################################################################
 #
@@ -58,23 +58,23 @@ simxl:
 	$(_TARGETS_) $(_TB_)
 
 simw:
-	@$(MAKE) -s sim ACCESS="-ACCESS +r" WAVES="-DEFINE WAVES"
+	@$(MAKE) $(MS) sim ACCESS="-ACCESS +r" WAVES="-DEFINE WAVES"
 
 sim:
 	@echo ""
 	@echo "----- Running NCVLOG ... ----------"
-	$(MAKE) $(MS) vlog				\
+	@$(MAKE) $(MS) vlog				\
 		TARGETS="$(_TARGETS_)"			\
 		TB="$(_TB_)"				\
 		INCDIR=$(INCDIR)			\
 		WAVES="$(WAVES)"
 	@echo ""
 	@echo "----- Running NCELAB ... ----------"
-	$(MAKE) $(MS) elab				\
+	@$(MAKE) $(MS) elab				\
 		ACCESS="$(ACCESS)" TOP=$(_TOP_)
 	@echo ""
 	@echo "----- Running NCSIM ... ----------"
-	$(MAKE) $(MS) ncsim TOP=$(_TOP_)
+	@$(MAKE) $(MS) ncsim TOP=$(_TOP_)
 	@echo ""
 
 hal:

@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_rf.v,v 1.1 2001-07-29 08:57:02 rudi Exp $
+//  $Id: wb_dma_rf.v,v 1.2 2001-08-15 05:40:30 rudi Exp $
 //
-//  $Date: 2001-07-29 08:57:02 $
-//  $Revision: 1.1 $
+//  $Date: 2001-08-15 05:40:30 $
+//  $Revision: 1.2 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.1  2001/07/29 08:57:02  rudi
+//
+//
+//               1) Changed Directory Structure
+//               2) Added restart signal (REST)
+//
 //               Revision 1.4  2001/06/14 08:50:46  rudi
 //
 //               Changed name of channel register file module.
@@ -258,7 +264,6 @@ wire	[31:0]	sw_pointer28, sw_pointer29, sw_pointer30;
 
 assign int_maska = {1'h0, int_maska_r};
 assign int_maskb = {1'h0, int_maskb_r};
-//assign csr = {24'h0, csr_r[7:1], paused};
 assign csr = {31'h0, paused};
 
 ////////////////////////////////////////////////////////////////////
@@ -291,7 +296,7 @@ always @(posedge clk)
 	   8'he:	wb_rf_dout <= #1 pointer0;
 	   8'hf:	wb_rf_dout <= #1 sw_pointer0;
 
-`ifdef HAVE_CH1
+`ifdef WDMA_HAVE_CH1
 	   8'h10:	wb_rf_dout <= #1 ch1_csr;
 	   8'h11:	wb_rf_dout <= #1 ch1_txsz;
 	   8'h12:	wb_rf_dout <= #1 ch1_adr0;
@@ -302,7 +307,7 @@ always @(posedge clk)
 	   8'h17:	wb_rf_dout <= #1 sw_pointer1;
 `endif
 
-`ifdef HAVE_CH2
+`ifdef WDMA_HAVE_CH2
 	   8'h18:	wb_rf_dout <= #1 ch2_csr;
 	   8'h19:	wb_rf_dout <= #1 ch2_txsz;
 	   8'h1a:	wb_rf_dout <= #1 ch2_adr0;
@@ -313,7 +318,7 @@ always @(posedge clk)
 	   8'h1f:	wb_rf_dout <= #1 sw_pointer2;
 `endif
 
-`ifdef HAVE_CH3
+`ifdef WDMA_HAVE_CH3
 	   8'h20:	wb_rf_dout <= #1 ch3_csr;
 	   8'h21:	wb_rf_dout <= #1 ch3_txsz;
 	   8'h22:	wb_rf_dout <= #1 ch3_adr0;
@@ -324,7 +329,7 @@ always @(posedge clk)
 	   8'h27:	wb_rf_dout <= #1 sw_pointer3;
 `endif
 
-`ifdef HAVE_CH4
+`ifdef WDMA_HAVE_CH4
 	   8'h28:	wb_rf_dout <= #1 ch4_csr;
 	   8'h29:	wb_rf_dout <= #1 ch4_txsz;
 	   8'h2a:	wb_rf_dout <= #1 ch4_adr0;
@@ -335,7 +340,7 @@ always @(posedge clk)
 	   8'h2f:	wb_rf_dout <= #1 sw_pointer4;
 `endif
 
-`ifdef HAVE_CH5
+`ifdef WDMA_HAVE_CH5
 	   8'h30:	wb_rf_dout <= #1 ch5_csr;
 	   8'h31:	wb_rf_dout <= #1 ch5_txsz;
 	   8'h32:	wb_rf_dout <= #1 ch5_adr0;
@@ -346,7 +351,7 @@ always @(posedge clk)
 	   8'h37:	wb_rf_dout <= #1 sw_pointer5;
 `endif
 
-`ifdef HAVE_CH6
+`ifdef WDMA_HAVE_CH6
 	   8'h38:	wb_rf_dout <= #1 ch6_csr;
 	   8'h39:	wb_rf_dout <= #1 ch6_txsz;
 	   8'h3a:	wb_rf_dout <= #1 ch6_adr0;
@@ -357,7 +362,7 @@ always @(posedge clk)
 	   8'h3f:	wb_rf_dout <= #1 sw_pointer6;
 `endif
 
-`ifdef HAVE_CH7
+`ifdef WDMA_HAVE_CH7
 	   8'h40:	wb_rf_dout <= #1 ch7_csr;
 	   8'h41:	wb_rf_dout <= #1 ch7_txsz;
 	   8'h42:	wb_rf_dout <= #1 ch7_adr0;
@@ -368,7 +373,7 @@ always @(posedge clk)
 	   8'h47:	wb_rf_dout <= #1 sw_pointer7;
 `endif
 
-`ifdef HAVE_CH8
+`ifdef WDMA_HAVE_CH8
 	   8'h48:	wb_rf_dout <= #1 ch8_csr;
 	   8'h49:	wb_rf_dout <= #1 ch8_txsz;
 	   8'h4a:	wb_rf_dout <= #1 ch8_adr0;
@@ -379,7 +384,7 @@ always @(posedge clk)
 	   8'h4f:	wb_rf_dout <= #1 sw_pointer8;
 `endif
 
-`ifdef HAVE_CH9
+`ifdef WDMA_HAVE_CH9
 	   8'h50:	wb_rf_dout <= #1 ch9_csr;
 	   8'h51:	wb_rf_dout <= #1 ch9_txsz;
 	   8'h52:	wb_rf_dout <= #1 ch9_adr0;
@@ -390,7 +395,7 @@ always @(posedge clk)
 	   8'h57:	wb_rf_dout <= #1 sw_pointer9;
 `endif
 
-`ifdef HAVE_CH10
+`ifdef WDMA_HAVE_CH10
 	   8'h58:	wb_rf_dout <= #1 ch10_csr;
 	   8'h59:	wb_rf_dout <= #1 ch10_txsz;
 	   8'h5a:	wb_rf_dout <= #1 ch10_adr0;
@@ -401,7 +406,7 @@ always @(posedge clk)
 	   8'h5f:	wb_rf_dout <= #1 sw_pointer10;
 `endif
 
-`ifdef HAVE_CH11
+`ifdef WDMA_HAVE_CH11
 	   8'h60:	wb_rf_dout <= #1 ch11_csr;
 	   8'h61:	wb_rf_dout <= #1 ch11_txsz;
 	   8'h62:	wb_rf_dout <= #1 ch11_adr0;
@@ -412,7 +417,7 @@ always @(posedge clk)
 	   8'h67:	wb_rf_dout <= #1 sw_pointer11;
 `endif
 
-`ifdef HAVE_CH12
+`ifdef WDMA_HAVE_CH12
 	   8'h68:	wb_rf_dout <= #1 ch12_csr;
 	   8'h69:	wb_rf_dout <= #1 ch12_txsz;
 	   8'h6a:	wb_rf_dout <= #1 ch12_adr0;
@@ -423,7 +428,7 @@ always @(posedge clk)
 	   8'h6f:	wb_rf_dout <= #1 sw_pointer12;
 `endif
 
-`ifdef HAVE_CH13
+`ifdef WDMA_HAVE_CH13
 	   8'h70:	wb_rf_dout <= #1 ch13_csr;
 	   8'h71:	wb_rf_dout <= #1 ch13_txsz;
 	   8'h72:	wb_rf_dout <= #1 ch13_adr0;
@@ -434,7 +439,7 @@ always @(posedge clk)
 	   8'h77:	wb_rf_dout <= #1 sw_pointer13;
 `endif
 
-`ifdef HAVE_CH14
+`ifdef WDMA_HAVE_CH14
 	   8'h78:	wb_rf_dout <= #1 ch14_csr;
 	   8'h79:	wb_rf_dout <= #1 ch14_txsz;
 	   8'h7a:	wb_rf_dout <= #1 ch14_adr0;
@@ -445,7 +450,7 @@ always @(posedge clk)
 	   8'h7f:	wb_rf_dout <= #1 sw_pointer14;
 `endif
 
-`ifdef HAVE_CH15
+`ifdef WDMA_HAVE_CH15
 	   8'h80:	wb_rf_dout <= #1 ch15_csr;
 	   8'h81:	wb_rf_dout <= #1 ch15_txsz;
 	   8'h82:	wb_rf_dout <= #1 ch15_adr0;
@@ -456,7 +461,7 @@ always @(posedge clk)
 	   8'h87:	wb_rf_dout <= #1 sw_pointer15;
 `endif
 
-`ifdef HAVE_CH16
+`ifdef WDMA_HAVE_CH16
 	   8'h88:	wb_rf_dout <= #1 ch16_csr;
 	   8'h89:	wb_rf_dout <= #1 ch16_txsz;
 	   8'h8a:	wb_rf_dout <= #1 ch16_adr0;
@@ -467,7 +472,7 @@ always @(posedge clk)
 	   8'h8f:	wb_rf_dout <= #1 sw_pointer16;
 `endif
 
-`ifdef HAVE_CH17
+`ifdef WDMA_HAVE_CH17
 	   8'h90:	wb_rf_dout <= #1 ch17_csr;
 	   8'h91:	wb_rf_dout <= #1 ch17_txsz;
 	   8'h92:	wb_rf_dout <= #1 ch17_adr0;
@@ -478,7 +483,7 @@ always @(posedge clk)
 	   8'h97:	wb_rf_dout <= #1 sw_pointer17;
 `endif
 
-`ifdef HAVE_CH18
+`ifdef WDMA_HAVE_CH18
 	   8'h98:	wb_rf_dout <= #1 ch18_csr;
 	   8'h99:	wb_rf_dout <= #1 ch18_txsz;
 	   8'h9a:	wb_rf_dout <= #1 ch18_adr0;
@@ -489,7 +494,7 @@ always @(posedge clk)
 	   8'h9f:	wb_rf_dout <= #1 sw_pointer18;
 `endif
 
-`ifdef HAVE_CH19
+`ifdef WDMA_HAVE_CH19
 	   8'ha0:	wb_rf_dout <= #1 ch19_csr;
 	   8'ha1:	wb_rf_dout <= #1 ch19_txsz;
 	   8'ha2:	wb_rf_dout <= #1 ch19_adr0;
@@ -500,7 +505,7 @@ always @(posedge clk)
 	   8'ha7:	wb_rf_dout <= #1 sw_pointer19;
 `endif
 
-`ifdef HAVE_CH20
+`ifdef WDMA_HAVE_CH20
 	   8'ha8:	wb_rf_dout <= #1 ch20_csr;
 	   8'ha9:	wb_rf_dout <= #1 ch20_txsz;
 	   8'haa:	wb_rf_dout <= #1 ch20_adr0;
@@ -511,7 +516,7 @@ always @(posedge clk)
 	   8'haf:	wb_rf_dout <= #1 sw_pointer20;
 `endif
 
-`ifdef HAVE_CH21
+`ifdef WDMA_HAVE_CH21
 	   8'hb0:	wb_rf_dout <= #1 ch21_csr;
 	   8'hb1:	wb_rf_dout <= #1 ch21_txsz;
 	   8'hb2:	wb_rf_dout <= #1 ch21_adr0;
@@ -522,7 +527,7 @@ always @(posedge clk)
 	   8'hb7:	wb_rf_dout <= #1 sw_pointer21;
 `endif
 
-`ifdef HAVE_CH22
+`ifdef WDMA_HAVE_CH22
 	   8'hb8:	wb_rf_dout <= #1 ch22_csr;
 	   8'hb9:	wb_rf_dout <= #1 ch22_txsz;
 	   8'hba:	wb_rf_dout <= #1 ch22_adr0;
@@ -533,7 +538,7 @@ always @(posedge clk)
 	   8'hbf:	wb_rf_dout <= #1 sw_pointer22;
 `endif
 
-`ifdef HAVE_CH23
+`ifdef WDMA_HAVE_CH23
 	   8'hc0:	wb_rf_dout <= #1 ch23_csr;
 	   8'hc1:	wb_rf_dout <= #1 ch23_txsz;
 	   8'hc2:	wb_rf_dout <= #1 ch23_adr0;
@@ -544,7 +549,7 @@ always @(posedge clk)
 	   8'hc7:	wb_rf_dout <= #1 sw_pointer23;
 `endif
 
-`ifdef HAVE_CH24
+`ifdef WDMA_HAVE_CH24
 	   8'hc8:	wb_rf_dout <= #1 ch24_csr;
 	   8'hc9:	wb_rf_dout <= #1 ch24_txsz;
 	   8'hca:	wb_rf_dout <= #1 ch24_adr0;
@@ -555,7 +560,7 @@ always @(posedge clk)
 	   8'hcf:	wb_rf_dout <= #1 sw_pointer24;
 `endif
 
-`ifdef HAVE_CH25
+`ifdef WDMA_HAVE_CH25
 	   8'hd0:	wb_rf_dout <= #1 ch25_csr;
 	   8'hd1:	wb_rf_dout <= #1 ch25_txsz;
 	   8'hd2:	wb_rf_dout <= #1 ch25_adr0;
@@ -566,7 +571,7 @@ always @(posedge clk)
 	   8'hd7:	wb_rf_dout <= #1 sw_pointer25;
 `endif
 
-`ifdef HAVE_CH26
+`ifdef WDMA_HAVE_CH26
 	   8'hd8:	wb_rf_dout <= #1 ch26_csr;
 	   8'hd9:	wb_rf_dout <= #1 ch26_txsz;
 	   8'hda:	wb_rf_dout <= #1 ch26_adr0;
@@ -577,7 +582,7 @@ always @(posedge clk)
 	   8'hdf:	wb_rf_dout <= #1 sw_pointer26;
 `endif
 
-`ifdef HAVE_CH27
+`ifdef WDMA_HAVE_CH27
 	   8'he0:	wb_rf_dout <= #1 ch27_csr;
 	   8'he1:	wb_rf_dout <= #1 ch27_txsz;
 	   8'he2:	wb_rf_dout <= #1 ch27_adr0;
@@ -588,7 +593,7 @@ always @(posedge clk)
 	   8'he7:	wb_rf_dout <= #1 sw_pointer27;
 `endif
 
-`ifdef HAVE_CH28
+`ifdef WDMA_HAVE_CH28
 	   8'he8:	wb_rf_dout <= #1 ch28_csr;
 	   8'he9:	wb_rf_dout <= #1 ch28_txsz;
 	   8'hea:	wb_rf_dout <= #1 ch28_adr0;
@@ -599,7 +604,7 @@ always @(posedge clk)
 	   8'hef:	wb_rf_dout <= #1 sw_pointer28;
 `endif
 
-`ifdef HAVE_CH29
+`ifdef WDMA_HAVE_CH29
 	   8'hf0:	wb_rf_dout <= #1 ch29_csr;
 	   8'hf1:	wb_rf_dout <= #1 ch29_txsz;
 	   8'hf2:	wb_rf_dout <= #1 ch29_adr0;
@@ -610,7 +615,7 @@ always @(posedge clk)
 	   8'hf7:	wb_rf_dout <= #1 sw_pointer29;
 `endif
 
-`ifdef HAVE_CH30
+`ifdef WDMA_HAVE_CH30
 	   8'hf8:	wb_rf_dout <= #1 ch30_csr;
 	   8'hf9:	wb_rf_dout <= #1 ch30_txsz;
 	   8'hfa:	wb_rf_dout <= #1 ch30_adr0;
@@ -621,7 +626,7 @@ always @(posedge clk)
 	   8'hff:	wb_rf_dout <= #1 sw_pointer30;
 `endif
 
-`ifdef HAVE_CH31
+`ifdef WDMA_HAVE_CH31
 	   8'h100:	wb_rf_dout <= #1 ch31_csr;
 	   8'h101:	wb_rf_dout <= #1 ch31_txsz;
 	   8'h102:	wb_rf_dout <= #1 ch31_adr0;
@@ -648,19 +653,19 @@ assign int_maskb_we	= wb_rf_we & (wb_rf_adr == 8'h2);
 // ---------------------------------------------------
 
 always @(posedge clk or negedge rst)
-	if(!rst)		csr_r <= #1 0;
+	if(!rst)		csr_r <= #1 8'h0;
 	else
 	if(csr_we)		csr_r <= #1 wb_rf_din[7:0];
 
 // ---------------------------------------------------
 // INT_MASK
 always @(posedge clk or negedge rst)
-	if(!rst)		int_maska_r <= #1 0;
+	if(!rst)		int_maska_r <= #1 31'h0;
 	else
 	if(int_maska_we)	int_maska_r <= #1 wb_rf_din[30:0];
 
 always @(posedge clk or negedge rst)
-	if(!rst)		int_maskb_r <= #1 0;
+	if(!rst)		int_maskb_r <= #1 31'h0;
 	else
 	if(int_maskb_we)	int_maskb_r <= #1 wb_rf_din[30:0];
 
@@ -684,7 +689,7 @@ always @(posedge clk)
 // Channel Register File
 //
 
-wb_dma_ch_rf #(0, `HAVE_ARS0, `HAVE_ED0, `HAVE_CBUF0) u0(
+wb_dma_ch_rf #(0, `WDMA_HAVE_ARS0, `WDMA_HAVE_ED0, `WDMA_HAVE_CBUF0) u0(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer0	),
@@ -722,8 +727,8 @@ wb_dma_ch_rf #(0, `HAVE_ARS0, `HAVE_ED0, `HAVE_CBUF0) u0(
 		.ptr_set(	ptr_set		)
 		);
 
-`ifdef HAVE_CH1
-wb_dma_ch_rf #(1, `HAVE_ARS1, `HAVE_ED1, `HAVE_CBUF1) u1(
+`ifdef WDMA_HAVE_CH1
+wb_dma_ch_rf #(1, `WDMA_HAVE_ARS1, `WDMA_HAVE_ED1, `WDMA_HAVE_CBUF1) u1(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer1	),
@@ -761,7 +766,7 @@ wb_dma_ch_rf #(1, `HAVE_ARS1, `HAVE_ED1, `HAVE_CBUF1) u1(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(1, `HAVE_ARS1, `HAVE_ED1, `HAVE_CBUF1) u1(
+wb_dma_ch_rf_dummy #(1, `WDMA_HAVE_ARS1, `WDMA_HAVE_ED1, `WDMA_HAVE_CBUF1) u1(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer1	),
@@ -801,8 +806,8 @@ wb_dma_ch_rf_dummy #(1, `HAVE_ARS1, `HAVE_ED1, `HAVE_CBUF1) u1(
 `endif
 
 
-`ifdef HAVE_CH2
-wb_dma_ch_rf #(2, `HAVE_ARS2, `HAVE_ED2, `HAVE_CBUF2) u2(
+`ifdef WDMA_HAVE_CH2
+wb_dma_ch_rf #(2, `WDMA_HAVE_ARS2, `WDMA_HAVE_ED2, `WDMA_HAVE_CBUF2) u2(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer2	),
@@ -840,7 +845,7 @@ wb_dma_ch_rf #(2, `HAVE_ARS2, `HAVE_ED2, `HAVE_CBUF2) u2(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(2, `HAVE_ARS2, `HAVE_ED2, `HAVE_CBUF2) u2(
+wb_dma_ch_rf_dummy #(2, `WDMA_HAVE_ARS2, `WDMA_HAVE_ED2, `WDMA_HAVE_CBUF2) u2(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer2	),
@@ -880,8 +885,8 @@ wb_dma_ch_rf_dummy #(2, `HAVE_ARS2, `HAVE_ED2, `HAVE_CBUF2) u2(
 `endif
 
 
-`ifdef HAVE_CH3
-wb_dma_ch_rf #(3, `HAVE_ARS3, `HAVE_ED3, `HAVE_CBUF3) u3(
+`ifdef WDMA_HAVE_CH3
+wb_dma_ch_rf #(3, `WDMA_HAVE_ARS3, `WDMA_HAVE_ED3, `WDMA_HAVE_CBUF3) u3(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer3	),
@@ -919,7 +924,7 @@ wb_dma_ch_rf #(3, `HAVE_ARS3, `HAVE_ED3, `HAVE_CBUF3) u3(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(3, `HAVE_ARS3, `HAVE_ED3, `HAVE_CBUF3) u3(
+wb_dma_ch_rf_dummy #(3, `WDMA_HAVE_ARS3, `WDMA_HAVE_ED3, `WDMA_HAVE_CBUF3) u3(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer3	),
@@ -959,8 +964,8 @@ wb_dma_ch_rf_dummy #(3, `HAVE_ARS3, `HAVE_ED3, `HAVE_CBUF3) u3(
 `endif
 
 
-`ifdef HAVE_CH4
-wb_dma_ch_rf #(4, `HAVE_ARS4, `HAVE_ED4, `HAVE_CBUF4) u4(
+`ifdef WDMA_HAVE_CH4
+wb_dma_ch_rf #(4, `WDMA_HAVE_ARS4, `WDMA_HAVE_ED4, `WDMA_HAVE_CBUF4) u4(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer4	),
@@ -998,7 +1003,7 @@ wb_dma_ch_rf #(4, `HAVE_ARS4, `HAVE_ED4, `HAVE_CBUF4) u4(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(4, `HAVE_ARS4, `HAVE_ED4, `HAVE_CBUF4) u4(
+wb_dma_ch_rf_dummy #(4, `WDMA_HAVE_ARS4, `WDMA_HAVE_ED4, `WDMA_HAVE_CBUF4) u4(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer4	),
@@ -1038,8 +1043,8 @@ wb_dma_ch_rf_dummy #(4, `HAVE_ARS4, `HAVE_ED4, `HAVE_CBUF4) u4(
 `endif
 
 
-`ifdef HAVE_CH5
-wb_dma_ch_rf #(5, `HAVE_ARS5, `HAVE_ED5, `HAVE_CBUF5) u5(
+`ifdef WDMA_HAVE_CH5
+wb_dma_ch_rf #(5, `WDMA_HAVE_ARS5, `WDMA_HAVE_ED5, `WDMA_HAVE_CBUF5) u5(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer5	),
@@ -1077,7 +1082,7 @@ wb_dma_ch_rf #(5, `HAVE_ARS5, `HAVE_ED5, `HAVE_CBUF5) u5(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(5, `HAVE_ARS5, `HAVE_ED5, `HAVE_CBUF5) u5(
+wb_dma_ch_rf_dummy #(5, `WDMA_HAVE_ARS5, `WDMA_HAVE_ED5, `WDMA_HAVE_CBUF5) u5(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer5	),
@@ -1117,8 +1122,8 @@ wb_dma_ch_rf_dummy #(5, `HAVE_ARS5, `HAVE_ED5, `HAVE_CBUF5) u5(
 `endif
 
 
-`ifdef HAVE_CH6
-wb_dma_ch_rf #(6, `HAVE_ARS6, `HAVE_ED6, `HAVE_CBUF6) u6(
+`ifdef WDMA_HAVE_CH6
+wb_dma_ch_rf #(6, `WDMA_HAVE_ARS6, `WDMA_HAVE_ED6, `WDMA_HAVE_CBUF6) u6(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer6	),
@@ -1156,7 +1161,7 @@ wb_dma_ch_rf #(6, `HAVE_ARS6, `HAVE_ED6, `HAVE_CBUF6) u6(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(6, `HAVE_ARS6, `HAVE_ED6, `HAVE_CBUF6) u6(
+wb_dma_ch_rf_dummy #(6, `WDMA_HAVE_ARS6, `WDMA_HAVE_ED6, `WDMA_HAVE_CBUF6) u6(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer6	),
@@ -1196,8 +1201,8 @@ wb_dma_ch_rf_dummy #(6, `HAVE_ARS6, `HAVE_ED6, `HAVE_CBUF6) u6(
 `endif
 
 
-`ifdef HAVE_CH7
-wb_dma_ch_rf #(7, `HAVE_ARS7, `HAVE_ED7, `HAVE_CBUF7) u7(
+`ifdef WDMA_HAVE_CH7
+wb_dma_ch_rf #(7, `WDMA_HAVE_ARS7, `WDMA_HAVE_ED7, `WDMA_HAVE_CBUF7) u7(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer7	),
@@ -1235,7 +1240,7 @@ wb_dma_ch_rf #(7, `HAVE_ARS7, `HAVE_ED7, `HAVE_CBUF7) u7(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(7, `HAVE_ARS7, `HAVE_ED7, `HAVE_CBUF7) u7(
+wb_dma_ch_rf_dummy #(7, `WDMA_HAVE_ARS7, `WDMA_HAVE_ED7, `WDMA_HAVE_CBUF7) u7(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer7	),
@@ -1275,8 +1280,8 @@ wb_dma_ch_rf_dummy #(7, `HAVE_ARS7, `HAVE_ED7, `HAVE_CBUF7) u7(
 `endif
 
 
-`ifdef HAVE_CH8
-wb_dma_ch_rf #(8, `HAVE_ARS8, `HAVE_ED8, `HAVE_CBUF8) u8(
+`ifdef WDMA_HAVE_CH8
+wb_dma_ch_rf #(8, `WDMA_HAVE_ARS8, `WDMA_HAVE_ED8, `WDMA_HAVE_CBUF8) u8(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer8	),
@@ -1314,7 +1319,7 @@ wb_dma_ch_rf #(8, `HAVE_ARS8, `HAVE_ED8, `HAVE_CBUF8) u8(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(8, `HAVE_ARS8, `HAVE_ED8, `HAVE_CBUF8) u8(
+wb_dma_ch_rf_dummy #(8, `WDMA_HAVE_ARS8, `WDMA_HAVE_ED8, `WDMA_HAVE_CBUF8) u8(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer8	),
@@ -1354,8 +1359,8 @@ wb_dma_ch_rf_dummy #(8, `HAVE_ARS8, `HAVE_ED8, `HAVE_CBUF8) u8(
 `endif
 
 
-`ifdef HAVE_CH9
-wb_dma_ch_rf #(9, `HAVE_ARS9, `HAVE_ED9, `HAVE_CBUF9) u9(
+`ifdef WDMA_HAVE_CH9
+wb_dma_ch_rf #(9, `WDMA_HAVE_ARS9, `WDMA_HAVE_ED9, `WDMA_HAVE_CBUF9) u9(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer9	),
@@ -1393,7 +1398,7 @@ wb_dma_ch_rf #(9, `HAVE_ARS9, `HAVE_ED9, `HAVE_CBUF9) u9(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(9, `HAVE_ARS9, `HAVE_ED9, `HAVE_CBUF9) u9(
+wb_dma_ch_rf_dummy #(9, `WDMA_HAVE_ARS9, `WDMA_HAVE_ED9, `WDMA_HAVE_CBUF9) u9(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer9	),
@@ -1433,8 +1438,8 @@ wb_dma_ch_rf_dummy #(9, `HAVE_ARS9, `HAVE_ED9, `HAVE_CBUF9) u9(
 `endif
 
 
-`ifdef HAVE_CH10
-wb_dma_ch_rf #(10, `HAVE_ARS10, `HAVE_ED10, `HAVE_CBUF10) u10(
+`ifdef WDMA_HAVE_CH10
+wb_dma_ch_rf #(10, `WDMA_HAVE_ARS10, `WDMA_HAVE_ED10, `WDMA_HAVE_CBUF10) u10(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer10	),
@@ -1472,7 +1477,7 @@ wb_dma_ch_rf #(10, `HAVE_ARS10, `HAVE_ED10, `HAVE_CBUF10) u10(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(10, `HAVE_ARS10, `HAVE_ED10, `HAVE_CBUF10) u10(
+wb_dma_ch_rf_dummy #(10, `WDMA_HAVE_ARS10, `WDMA_HAVE_ED10, `WDMA_HAVE_CBUF10) u10(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer10	),
@@ -1512,8 +1517,8 @@ wb_dma_ch_rf_dummy #(10, `HAVE_ARS10, `HAVE_ED10, `HAVE_CBUF10) u10(
 `endif
 
 
-`ifdef HAVE_CH11
-wb_dma_ch_rf #(11, `HAVE_ARS11, `HAVE_ED11, `HAVE_CBUF11) u11(
+`ifdef WDMA_HAVE_CH11
+wb_dma_ch_rf #(11, `WDMA_HAVE_ARS11, `WDMA_HAVE_ED11, `WDMA_HAVE_CBUF11) u11(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer11	),
@@ -1551,7 +1556,7 @@ wb_dma_ch_rf #(11, `HAVE_ARS11, `HAVE_ED11, `HAVE_CBUF11) u11(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(11, `HAVE_ARS11, `HAVE_ED11, `HAVE_CBUF11) u11(
+wb_dma_ch_rf_dummy #(11, `WDMA_HAVE_ARS11, `WDMA_HAVE_ED11, `WDMA_HAVE_CBUF11) u11(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer11	),
@@ -1591,8 +1596,8 @@ wb_dma_ch_rf_dummy #(11, `HAVE_ARS11, `HAVE_ED11, `HAVE_CBUF11) u11(
 `endif
 
 
-`ifdef HAVE_CH12
-wb_dma_ch_rf #(12, `HAVE_ARS12, `HAVE_ED12, `HAVE_CBUF12) u12(
+`ifdef WDMA_HAVE_CH12
+wb_dma_ch_rf #(12, `WDMA_HAVE_ARS12, `WDMA_HAVE_ED12, `WDMA_HAVE_CBUF12) u12(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer12	),
@@ -1630,7 +1635,7 @@ wb_dma_ch_rf #(12, `HAVE_ARS12, `HAVE_ED12, `HAVE_CBUF12) u12(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(12, `HAVE_ARS12, `HAVE_ED12, `HAVE_CBUF12) u12(
+wb_dma_ch_rf_dummy #(12, `WDMA_HAVE_ARS12, `WDMA_HAVE_ED12, `WDMA_HAVE_CBUF12) u12(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer12	),
@@ -1670,8 +1675,8 @@ wb_dma_ch_rf_dummy #(12, `HAVE_ARS12, `HAVE_ED12, `HAVE_CBUF12) u12(
 `endif
 
 
-`ifdef HAVE_CH13
-wb_dma_ch_rf #(13, `HAVE_ARS13, `HAVE_ED13, `HAVE_CBUF13) u13(
+`ifdef WDMA_HAVE_CH13
+wb_dma_ch_rf #(13, `WDMA_HAVE_ARS13, `WDMA_HAVE_ED13, `WDMA_HAVE_CBUF13) u13(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer13	),
@@ -1709,7 +1714,7 @@ wb_dma_ch_rf #(13, `HAVE_ARS13, `HAVE_ED13, `HAVE_CBUF13) u13(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(13, `HAVE_ARS13, `HAVE_ED13, `HAVE_CBUF13) u13(
+wb_dma_ch_rf_dummy #(13, `WDMA_HAVE_ARS13, `WDMA_HAVE_ED13, `WDMA_HAVE_CBUF13) u13(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer13	),
@@ -1749,8 +1754,8 @@ wb_dma_ch_rf_dummy #(13, `HAVE_ARS13, `HAVE_ED13, `HAVE_CBUF13) u13(
 `endif
 
 
-`ifdef HAVE_CH14
-wb_dma_ch_rf #(14, `HAVE_ARS14, `HAVE_ED14, `HAVE_CBUF14) u14(
+`ifdef WDMA_HAVE_CH14
+wb_dma_ch_rf #(14, `WDMA_HAVE_ARS14, `WDMA_HAVE_ED14, `WDMA_HAVE_CBUF14) u14(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer14	),
@@ -1788,7 +1793,7 @@ wb_dma_ch_rf #(14, `HAVE_ARS14, `HAVE_ED14, `HAVE_CBUF14) u14(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(14, `HAVE_ARS14, `HAVE_ED14, `HAVE_CBUF14) u14(
+wb_dma_ch_rf_dummy #(14, `WDMA_HAVE_ARS14, `WDMA_HAVE_ED14, `WDMA_HAVE_CBUF14) u14(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer14	),
@@ -1828,8 +1833,8 @@ wb_dma_ch_rf_dummy #(14, `HAVE_ARS14, `HAVE_ED14, `HAVE_CBUF14) u14(
 `endif
 
 
-`ifdef HAVE_CH15
-wb_dma_ch_rf #(15, `HAVE_ARS15, `HAVE_ED15, `HAVE_CBUF15) u15(
+`ifdef WDMA_HAVE_CH15
+wb_dma_ch_rf #(15, `WDMA_HAVE_ARS15, `WDMA_HAVE_ED15, `WDMA_HAVE_CBUF15) u15(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer15	),
@@ -1867,7 +1872,7 @@ wb_dma_ch_rf #(15, `HAVE_ARS15, `HAVE_ED15, `HAVE_CBUF15) u15(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(15, `HAVE_ARS15, `HAVE_ED15, `HAVE_CBUF15) u15(
+wb_dma_ch_rf_dummy #(15, `WDMA_HAVE_ARS15, `WDMA_HAVE_ED15, `WDMA_HAVE_CBUF15) u15(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer15	),
@@ -1907,8 +1912,8 @@ wb_dma_ch_rf_dummy #(15, `HAVE_ARS15, `HAVE_ED15, `HAVE_CBUF15) u15(
 `endif
 
 
-`ifdef HAVE_CH16
-wb_dma_ch_rf #(16, `HAVE_ARS16, `HAVE_ED16, `HAVE_CBUF16) u16(
+`ifdef WDMA_HAVE_CH16
+wb_dma_ch_rf #(16, `WDMA_HAVE_ARS16, `WDMA_HAVE_ED16, `WDMA_HAVE_CBUF16) u16(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer16	),
@@ -1946,7 +1951,7 @@ wb_dma_ch_rf #(16, `HAVE_ARS16, `HAVE_ED16, `HAVE_CBUF16) u16(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(16, `HAVE_ARS16, `HAVE_ED16, `HAVE_CBUF16) u16(
+wb_dma_ch_rf_dummy #(16, `WDMA_HAVE_ARS16, `WDMA_HAVE_ED16, `WDMA_HAVE_CBUF16) u16(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer16	),
@@ -1986,8 +1991,8 @@ wb_dma_ch_rf_dummy #(16, `HAVE_ARS16, `HAVE_ED16, `HAVE_CBUF16) u16(
 `endif
 
 
-`ifdef HAVE_CH17
-wb_dma_ch_rf #(17, `HAVE_ARS17, `HAVE_ED17, `HAVE_CBUF17) u17(
+`ifdef WDMA_HAVE_CH17
+wb_dma_ch_rf #(17, `WDMA_HAVE_ARS17, `WDMA_HAVE_ED17, `WDMA_HAVE_CBUF17) u17(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer17	),
@@ -2025,7 +2030,7 @@ wb_dma_ch_rf #(17, `HAVE_ARS17, `HAVE_ED17, `HAVE_CBUF17) u17(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(17, `HAVE_ARS17, `HAVE_ED17, `HAVE_CBUF17) u17(
+wb_dma_ch_rf_dummy #(17, `WDMA_HAVE_ARS17, `WDMA_HAVE_ED17, `WDMA_HAVE_CBUF17) u17(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer17	),
@@ -2065,8 +2070,8 @@ wb_dma_ch_rf_dummy #(17, `HAVE_ARS17, `HAVE_ED17, `HAVE_CBUF17) u17(
 `endif
 
 
-`ifdef HAVE_CH18
-wb_dma_ch_rf #(18, `HAVE_ARS18, `HAVE_ED18, `HAVE_CBUF18) u18(
+`ifdef WDMA_HAVE_CH18
+wb_dma_ch_rf #(18, `WDMA_HAVE_ARS18, `WDMA_HAVE_ED18, `WDMA_HAVE_CBUF18) u18(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer18	),
@@ -2104,7 +2109,7 @@ wb_dma_ch_rf #(18, `HAVE_ARS18, `HAVE_ED18, `HAVE_CBUF18) u18(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(18, `HAVE_ARS18, `HAVE_ED18, `HAVE_CBUF18) u18(
+wb_dma_ch_rf_dummy #(18, `WDMA_HAVE_ARS18, `WDMA_HAVE_ED18, `WDMA_HAVE_CBUF18) u18(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer18	),
@@ -2144,8 +2149,8 @@ wb_dma_ch_rf_dummy #(18, `HAVE_ARS18, `HAVE_ED18, `HAVE_CBUF18) u18(
 `endif
 
 
-`ifdef HAVE_CH19
-wb_dma_ch_rf #(19, `HAVE_ARS19, `HAVE_ED19, `HAVE_CBUF19) u19(
+`ifdef WDMA_HAVE_CH19
+wb_dma_ch_rf #(19, `WDMA_HAVE_ARS19, `WDMA_HAVE_ED19, `WDMA_HAVE_CBUF19) u19(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer19	),
@@ -2183,7 +2188,7 @@ wb_dma_ch_rf #(19, `HAVE_ARS19, `HAVE_ED19, `HAVE_CBUF19) u19(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(19, `HAVE_ARS19, `HAVE_ED19, `HAVE_CBUF19) u19(
+wb_dma_ch_rf_dummy #(19, `WDMA_HAVE_ARS19, `WDMA_HAVE_ED19, `WDMA_HAVE_CBUF19) u19(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer19	),
@@ -2223,8 +2228,8 @@ wb_dma_ch_rf_dummy #(19, `HAVE_ARS19, `HAVE_ED19, `HAVE_CBUF19) u19(
 `endif
 
 
-`ifdef HAVE_CH20
-wb_dma_ch_rf #(20, `HAVE_ARS20, `HAVE_ED20, `HAVE_CBUF20) u20(
+`ifdef WDMA_HAVE_CH20
+wb_dma_ch_rf #(20, `WDMA_HAVE_ARS20, `WDMA_HAVE_ED20, `WDMA_HAVE_CBUF20) u20(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer20	),
@@ -2262,7 +2267,7 @@ wb_dma_ch_rf #(20, `HAVE_ARS20, `HAVE_ED20, `HAVE_CBUF20) u20(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(20, `HAVE_ARS20, `HAVE_ED20, `HAVE_CBUF20) u20(
+wb_dma_ch_rf_dummy #(20, `WDMA_HAVE_ARS20, `WDMA_HAVE_ED20, `WDMA_HAVE_CBUF20) u20(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer20	),
@@ -2302,8 +2307,8 @@ wb_dma_ch_rf_dummy #(20, `HAVE_ARS20, `HAVE_ED20, `HAVE_CBUF20) u20(
 `endif
 
 
-`ifdef HAVE_CH21
-wb_dma_ch_rf #(21, `HAVE_ARS21, `HAVE_ED21, `HAVE_CBUF21) u21(
+`ifdef WDMA_HAVE_CH21
+wb_dma_ch_rf #(21, `WDMA_HAVE_ARS21, `WDMA_HAVE_ED21, `WDMA_HAVE_CBUF21) u21(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer21	),
@@ -2341,7 +2346,7 @@ wb_dma_ch_rf #(21, `HAVE_ARS21, `HAVE_ED21, `HAVE_CBUF21) u21(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(21, `HAVE_ARS21, `HAVE_ED21, `HAVE_CBUF21) u21(
+wb_dma_ch_rf_dummy #(21, `WDMA_HAVE_ARS21, `WDMA_HAVE_ED21, `WDMA_HAVE_CBUF21) u21(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer21	),
@@ -2381,8 +2386,8 @@ wb_dma_ch_rf_dummy #(21, `HAVE_ARS21, `HAVE_ED21, `HAVE_CBUF21) u21(
 `endif
 
 
-`ifdef HAVE_CH22
-wb_dma_ch_rf #(22, `HAVE_ARS22, `HAVE_ED22, `HAVE_CBUF22) u22(
+`ifdef WDMA_HAVE_CH22
+wb_dma_ch_rf #(22, `WDMA_HAVE_ARS22, `WDMA_HAVE_ED22, `WDMA_HAVE_CBUF22) u22(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer22	),
@@ -2420,7 +2425,7 @@ wb_dma_ch_rf #(22, `HAVE_ARS22, `HAVE_ED22, `HAVE_CBUF22) u22(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(22, `HAVE_ARS22, `HAVE_ED22, `HAVE_CBUF22) u22(
+wb_dma_ch_rf_dummy #(22, `WDMA_HAVE_ARS22, `WDMA_HAVE_ED22, `WDMA_HAVE_CBUF22) u22(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer22	),
@@ -2460,8 +2465,8 @@ wb_dma_ch_rf_dummy #(22, `HAVE_ARS22, `HAVE_ED22, `HAVE_CBUF22) u22(
 `endif
 
 
-`ifdef HAVE_CH23
-wb_dma_ch_rf #(23, `HAVE_ARS23, `HAVE_ED23, `HAVE_CBUF23) u23(
+`ifdef WDMA_HAVE_CH23
+wb_dma_ch_rf #(23, `WDMA_HAVE_ARS23, `WDMA_HAVE_ED23, `WDMA_HAVE_CBUF23) u23(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer23	),
@@ -2499,7 +2504,7 @@ wb_dma_ch_rf #(23, `HAVE_ARS23, `HAVE_ED23, `HAVE_CBUF23) u23(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(23, `HAVE_ARS23, `HAVE_ED23, `HAVE_CBUF23) u23(
+wb_dma_ch_rf_dummy #(23, `WDMA_HAVE_ARS23, `WDMA_HAVE_ED23, `WDMA_HAVE_CBUF23) u23(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer23	),
@@ -2539,8 +2544,8 @@ wb_dma_ch_rf_dummy #(23, `HAVE_ARS23, `HAVE_ED23, `HAVE_CBUF23) u23(
 `endif
 
 
-`ifdef HAVE_CH24
-wb_dma_ch_rf #(24, `HAVE_ARS24, `HAVE_ED24, `HAVE_CBUF24) u24(
+`ifdef WDMA_HAVE_CH24
+wb_dma_ch_rf #(24, `WDMA_HAVE_ARS24, `WDMA_HAVE_ED24, `WDMA_HAVE_CBUF24) u24(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer24	),
@@ -2578,7 +2583,7 @@ wb_dma_ch_rf #(24, `HAVE_ARS24, `HAVE_ED24, `HAVE_CBUF24) u24(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(24, `HAVE_ARS24, `HAVE_ED24, `HAVE_CBUF24) u24(
+wb_dma_ch_rf_dummy #(24, `WDMA_HAVE_ARS24, `WDMA_HAVE_ED24, `WDMA_HAVE_CBUF24) u24(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer24	),
@@ -2618,8 +2623,8 @@ wb_dma_ch_rf_dummy #(24, `HAVE_ARS24, `HAVE_ED24, `HAVE_CBUF24) u24(
 `endif
 
 
-`ifdef HAVE_CH25
-wb_dma_ch_rf #(25, `HAVE_ARS25, `HAVE_ED25, `HAVE_CBUF25) u25(
+`ifdef WDMA_HAVE_CH25
+wb_dma_ch_rf #(25, `WDMA_HAVE_ARS25, `WDMA_HAVE_ED25, `WDMA_HAVE_CBUF25) u25(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer25	),
@@ -2657,7 +2662,7 @@ wb_dma_ch_rf #(25, `HAVE_ARS25, `HAVE_ED25, `HAVE_CBUF25) u25(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(25, `HAVE_ARS25, `HAVE_ED25, `HAVE_CBUF25) u25(
+wb_dma_ch_rf_dummy #(25, `WDMA_HAVE_ARS25, `WDMA_HAVE_ED25, `WDMA_HAVE_CBUF25) u25(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer25	),
@@ -2697,8 +2702,8 @@ wb_dma_ch_rf_dummy #(25, `HAVE_ARS25, `HAVE_ED25, `HAVE_CBUF25) u25(
 `endif
 
 
-`ifdef HAVE_CH26
-wb_dma_ch_rf #(26, `HAVE_ARS26, `HAVE_ED26, `HAVE_CBUF26) u26(
+`ifdef WDMA_HAVE_CH26
+wb_dma_ch_rf #(26, `WDMA_HAVE_ARS26, `WDMA_HAVE_ED26, `WDMA_HAVE_CBUF26) u26(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer26	),
@@ -2736,7 +2741,7 @@ wb_dma_ch_rf #(26, `HAVE_ARS26, `HAVE_ED26, `HAVE_CBUF26) u26(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(26, `HAVE_ARS26, `HAVE_ED26, `HAVE_CBUF26) u26(
+wb_dma_ch_rf_dummy #(26, `WDMA_HAVE_ARS26, `WDMA_HAVE_ED26, `WDMA_HAVE_CBUF26) u26(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer26	),
@@ -2776,8 +2781,8 @@ wb_dma_ch_rf_dummy #(26, `HAVE_ARS26, `HAVE_ED26, `HAVE_CBUF26) u26(
 `endif
 
 
-`ifdef HAVE_CH27
-wb_dma_ch_rf #(27, `HAVE_ARS27, `HAVE_ED27, `HAVE_CBUF27) u27(
+`ifdef WDMA_HAVE_CH27
+wb_dma_ch_rf #(27, `WDMA_HAVE_ARS27, `WDMA_HAVE_ED27, `WDMA_HAVE_CBUF27) u27(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer27	),
@@ -2815,7 +2820,7 @@ wb_dma_ch_rf #(27, `HAVE_ARS27, `HAVE_ED27, `HAVE_CBUF27) u27(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(27, `HAVE_ARS27, `HAVE_ED27, `HAVE_CBUF27) u27(
+wb_dma_ch_rf_dummy #(27, `WDMA_HAVE_ARS27, `WDMA_HAVE_ED27, `WDMA_HAVE_CBUF27) u27(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer27	),
@@ -2855,8 +2860,8 @@ wb_dma_ch_rf_dummy #(27, `HAVE_ARS27, `HAVE_ED27, `HAVE_CBUF27) u27(
 `endif
 
 
-`ifdef HAVE_CH28
-wb_dma_ch_rf #(28, `HAVE_ARS28, `HAVE_ED28, `HAVE_CBUF28) u28(
+`ifdef WDMA_HAVE_CH28
+wb_dma_ch_rf #(28, `WDMA_HAVE_ARS28, `WDMA_HAVE_ED28, `WDMA_HAVE_CBUF28) u28(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer28	),
@@ -2894,7 +2899,7 @@ wb_dma_ch_rf #(28, `HAVE_ARS28, `HAVE_ED28, `HAVE_CBUF28) u28(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(28, `HAVE_ARS28, `HAVE_ED28, `HAVE_CBUF28) u28(
+wb_dma_ch_rf_dummy #(28, `WDMA_HAVE_ARS28, `WDMA_HAVE_ED28, `WDMA_HAVE_CBUF28) u28(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer28	),
@@ -2934,8 +2939,8 @@ wb_dma_ch_rf_dummy #(28, `HAVE_ARS28, `HAVE_ED28, `HAVE_CBUF28) u28(
 `endif
 
 
-`ifdef HAVE_CH29
-wb_dma_ch_rf #(29, `HAVE_ARS29, `HAVE_ED29, `HAVE_CBUF29) u29(
+`ifdef WDMA_HAVE_CH29
+wb_dma_ch_rf #(29, `WDMA_HAVE_ARS29, `WDMA_HAVE_ED29, `WDMA_HAVE_CBUF29) u29(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer29	),
@@ -2973,7 +2978,7 @@ wb_dma_ch_rf #(29, `HAVE_ARS29, `HAVE_ED29, `HAVE_CBUF29) u29(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(29, `HAVE_ARS29, `HAVE_ED29, `HAVE_CBUF29) u29(
+wb_dma_ch_rf_dummy #(29, `WDMA_HAVE_ARS29, `WDMA_HAVE_ED29, `WDMA_HAVE_CBUF29) u29(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer29	),
@@ -3013,8 +3018,8 @@ wb_dma_ch_rf_dummy #(29, `HAVE_ARS29, `HAVE_ED29, `HAVE_CBUF29) u29(
 `endif
 
 
-`ifdef HAVE_CH30
-wb_dma_ch_rf #(30, `HAVE_ARS30, `HAVE_ED30, `HAVE_CBUF30) u30(
+`ifdef WDMA_HAVE_CH30
+wb_dma_ch_rf #(30, `WDMA_HAVE_ARS30, `WDMA_HAVE_ED30, `WDMA_HAVE_CBUF30) u30(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer30	),
@@ -3052,7 +3057,7 @@ wb_dma_ch_rf #(30, `HAVE_ARS30, `HAVE_ED30, `HAVE_CBUF30) u30(
 		.ptr_set(	ptr_set		)
 		);
 `else
-wb_dma_ch_rf_dummy #(30, `HAVE_ARS30, `HAVE_ED30, `HAVE_CBUF30) u30(
+wb_dma_ch_rf_dummy #(30, `WDMA_HAVE_ARS30, `WDMA_HAVE_ED30, `WDMA_HAVE_CBUF30) u30(
 		.clk(		clk		),
 		.rst(		rst		),
 		.pointer(	pointer30	),

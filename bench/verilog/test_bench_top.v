@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: test_bench_top.v,v 1.1 2001-07-29 08:57:02 rudi Exp $
+//  $Id: test_bench_top.v,v 1.2 2001-08-15 05:40:29 rudi Exp $
 //
-//  $Date: 2001-07-29 08:57:02 $
-//  $Revision: 1.1 $
+//  $Date: 2001-08-15 05:40:29 $
+//  $Revision: 1.2 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.1  2001/07/29 08:57:02  rudi
+//
+//
+//               1) Changed Directory Structure
+//               2) Added restart signal (REST)
+//
 //               Revision 1.1.1.1  2001/03/19 13:11:22  rudi
 //               Initial Release
 //
@@ -102,10 +108,10 @@ wire		wb1_stb_o;
 wire		wb1_ack_i;
 wire		wb1_err_i;
 wire		wb1_rty_i;
-reg	[`CH_COUNT-1:0]	req_i;
-wire	[`CH_COUNT-1:0]	ack_o;
-reg	[`CH_COUNT-1:0]	nd_i;
-reg	[`CH_COUNT-1:0]	rest_i;
+reg	[`WDMA_CH_COUNT-1:0]	req_i;
+wire	[`WDMA_CH_COUNT-1:0]	ack_o;
+reg	[`WDMA_CH_COUNT-1:0]	nd_i;
+reg	[`WDMA_CH_COUNT-1:0]	rest_i;
 wire		inta_o;
 wire		intb_o;
 
@@ -202,7 +208,7 @@ initial
 
 	// HERE IS WHERE THE TEST CASES GO ...
 
-if(0)	// Full Regression Run
+if(1)	// Full Regression Run
    begin
 	pt10_rd;
 	pt01_wr;
@@ -240,7 +246,7 @@ else
 	// TEST DEVELOPMENT AREA
 	//
 
-	hw_dma4(0);
+	arb_test1;
 
    	repeat(100)	@(posedge clk);
 
@@ -268,8 +274,7 @@ always @(posedge clk)
 
 always @(posedge clk)
 	if(wb0_cyc_i | wb1_cyc_i | wb0_ack_i | wb1_ack_i)	wd_cnt <= #1 0;
-	else				wd_cnt <= #1 wd_cnt + 1;
-
+	else							wd_cnt <= #1 wd_cnt + 1;
 
 always @(wd_cnt)
 	if(wd_cnt>5000)
@@ -291,8 +296,8 @@ always #5 clk = ~clk;
 // Module Prototype
 
 wb_dma_top	u0(
-		.clk(		clk		),
-		.rst(		rst		),
+		.clk_i(		clk		),
+		.rst_i(		rst		),
 		.wb0s_data_i(	wb0s_data_i	),
 		.wb0s_data_o(	wb0s_data_o	),
 		.wb0_addr_i(	wb0_addr_i	),

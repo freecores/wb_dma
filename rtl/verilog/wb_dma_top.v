@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_top.v,v 1.1 2001-07-29 08:57:02 rudi Exp $
+//  $Id: wb_dma_top.v,v 1.2 2001-08-15 05:40:30 rudi Exp $
 //
-//  $Date: 2001-07-29 08:57:02 $
-//  $Revision: 1.1 $
+//  $Date: 2001-08-15 05:40:30 $
+//  $Revision: 1.2 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.1  2001/07/29 08:57:02  rudi
+//
+//
+//               1) Changed Directory Structure
+//               2) Added restart signal (REST)
+//
 //               Revision 1.3  2001/06/13 02:26:50  rudi
 //
 //
@@ -69,7 +75,7 @@
 
 `include "wb_dma_defines.v"
 
-module wb_dma_top(clk, rst,
+module wb_dma_top(clk_i, rst_i,
 
 	wb0s_data_i, wb0s_data_o, wb0_addr_i, wb0_sel_i, wb0_we_i, wb0_cyc_i,
 	wb0_stb_i, wb0_ack_o, wb0_err_o, wb0_rty_o,
@@ -86,7 +92,7 @@ module wb_dma_top(clk, rst,
 	inta_o, intb_o
 	);
 
-input		clk, rst;
+input		clk_i, rst_i;
 
 // --------------------------------------
 // WISHBONE INTERFACE 0
@@ -144,10 +150,10 @@ input		wb1_rty_i;
 
 // --------------------------------------
 // Misc Signals
-input	[`CH_COUNT-1:0]	dma_req_i;
-input	[`CH_COUNT-1:0]	dma_nd_i;
-output	[`CH_COUNT-1:0]	dma_ack_o;
-input	[`CH_COUNT-1:0]	dma_rest_i;
+input	[`WDMA_CH_COUNT-1:0]	dma_req_i;
+input	[`WDMA_CH_COUNT-1:0]	dma_nd_i;
+output	[`WDMA_CH_COUNT-1:0]	dma_ack_o;
+input	[`WDMA_CH_COUNT-1:0]	dma_rest_i;
 output			inta_o;
 output			intb_o;
 
@@ -269,10 +275,10 @@ wire	[30:0]	dma_rest;
 // Misc Logic
 //
 
-assign dma_req[`CH_COUNT-1:0] = dma_req_i;
-assign dma_nd[`CH_COUNT-1:0] = dma_nd_i;
-assign dma_rest[`CH_COUNT-1:0] = dma_rest_i;
-assign dma_ack_o = dma_ack[`CH_COUNT-1:0];
+assign dma_req[`WDMA_CH_COUNT-1:0] = dma_req_i;
+assign dma_nd[`WDMA_CH_COUNT-1:0] = dma_nd_i;
+assign dma_rest[`WDMA_CH_COUNT-1:0] = dma_rest_i;
+assign dma_ack_o = dma_ack[`WDMA_CH_COUNT-1:0];
 
 // --------------------------------------------------
 // This should go in to a separate Pass Through Block
@@ -293,8 +299,8 @@ assign slv1_pt_in  = mast0_pt_out;
 // DMA Register File
 
 wb_dma_rf	u0(
-		.clk(		clk		),
-		.rst(		rst		),
+		.clk(		clk_i		),
+		.rst(		rst_i		),
 		.wb_rf_adr(	slv0_adr[9:2]	),
 		.wb_rf_din(	slv0_dout	),
 		.wb_rf_dout(	slv0_din	),
@@ -574,8 +580,8 @@ wb_dma_rf	u0(
 
 // Channel Select
 wb_dma_ch_sel	u1(
-		.clk(		clk		),
-		.rst(		rst		),
+		.clk(		clk_i		),
+		.rst(		rst_i		),
 		.req_i(		dma_req		),
 		.ack_o(		dma_ack		),
 		.nd_i(		dma_nd		),
@@ -849,8 +855,8 @@ wb_dma_ch_sel	u1(
 
 // DMA Engine
 wb_dma_de	u2(
-		.clk(		clk		),
-		.rst(		rst		),
+		.clk(		clk_i		),
+		.rst(		rst_i		),
 		.mast0_go(	mast0_go	),
 		.mast0_we(	mast0_we	),
 		.mast0_adr(	mast0_adr	),
@@ -900,8 +906,8 @@ wb_dma_de	u2(
 
 // Wishbone Interface 0
 wb_dma_wb_if	u3(
-		.clk(		clk		),
-		.rst(		rst		),
+		.clk(		clk_i		),
+		.rst(		rst_i		),
 		.wbs_data_i(	wb0s_data_i	),
 		.wbs_data_o(	wb0s_data_o	),
 		.wb_addr_i(	wb0_addr_i	),
@@ -945,8 +951,8 @@ wb_dma_wb_if	u3(
 
 // Wishbone Interface 1
 wb_dma_wb_if	u4(
-		.clk(		clk		),
-		.rst(		rst		),
+		.clk(		clk_i		),
+		.rst(		rst_i		),
 		.wbs_data_i(	wb1s_data_i	),
 		.wbs_data_o(	wb1s_data_o	),
 		.wb_addr_i(	wb1_addr_i	),

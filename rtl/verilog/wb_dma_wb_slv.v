@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_wb_slv.v,v 1.1 2001-07-29 08:57:02 rudi Exp $
+//  $Id: wb_dma_wb_slv.v,v 1.2 2001-08-15 05:40:30 rudi Exp $
 //
-//  $Date: 2001-07-29 08:57:02 $
-//  $Revision: 1.1 $
+//  $Date: 2001-08-15 05:40:30 $
+//  $Revision: 1.2 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.1  2001/07/29 08:57:02  rudi
+//
+//
+//               1) Changed Directory Structure
+//               2) Added restart signal (REST)
+//
 //               Revision 1.2  2001/06/05 10:22:37  rudi
 //
 //
@@ -120,7 +126,7 @@ reg	[31:0]	slv_adr, slv_dout;
 // Misc Logic
 //
 
-assign rf_sel = `REG_SEL ;
+assign rf_sel = `WDMA_REG_SEL ;
 
 ////////////////////////////////////////////////////////////////////
 //

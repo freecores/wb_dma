@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_ch_sel.v,v 1.1 2001-07-29 08:57:02 rudi Exp $
+//  $Id: wb_dma_ch_sel.v,v 1.2 2001-08-15 05:40:30 rudi Exp $
 //
-//  $Date: 2001-07-29 08:57:02 $
-//  $Revision: 1.1 $
+//  $Date: 2001-08-15 05:40:30 $
+//  $Revision: 1.2 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.1  2001/07/29 08:57:02  rudi
+//
+//
+//               1) Changed Directory Structure
+//               2) Added restart signal (REST)
+//
 //               Revision 1.4  2001/06/14 08:52:00  rudi
 //
 //
@@ -236,7 +242,7 @@ wire	[4:0]	gnt_p28, gnt_p29, gnt_p30;
 // Aliases
 //
 
-`ifdef PRI_8
+`ifdef WDMA_PRI_8
 assign pri0 = ch0_csr[15:13];
 assign pri1 = ch1_csr[15:13];
 assign pri2 = ch2_csr[15:13];
@@ -269,7 +275,7 @@ assign pri28 = ch28_csr[15:13];
 assign pri29 = ch29_csr[15:13];
 assign pri30 = ch30_csr[15:13];
 `else
-`ifdef PRI_4
+`ifdef WDMA_PRI_4
 assign pri0 = {1'b0, ch0_csr[14:13]};
 assign pri1 = {1'b0, ch1_csr[14:13]};
 assign pri2 = {1'b0, ch2_csr[14:13]};
@@ -350,37 +356,37 @@ assign pri30 = {2'b0, ch30_csr[13]};
 always @(posedge clk)
 	req_r <= #1 req_i & ~ack_o;
 
-assign valid[0] = ch0_csr[`CH_EN] & (ch0_csr[`MODE] ? (req_r[0] & !ack_o[0]) : 1'b1);
-assign valid[1] = ch1_csr[`CH_EN] & (ch1_csr[`MODE] ? (req_r[1] & !ack_o[1]) : 1'b1);
-assign valid[2] = ch2_csr[`CH_EN] & (ch2_csr[`MODE] ? (req_r[2] & !ack_o[2]) : 1'b1);
-assign valid[3] = ch3_csr[`CH_EN] & (ch3_csr[`MODE] ? (req_r[3] & !ack_o[3]) : 1'b1);
-assign valid[4] = ch4_csr[`CH_EN] & (ch4_csr[`MODE] ? (req_r[4] & !ack_o[4]) : 1'b1);
-assign valid[5] = ch5_csr[`CH_EN] & (ch5_csr[`MODE] ? (req_r[5] & !ack_o[5]) : 1'b1);
-assign valid[6] = ch6_csr[`CH_EN] & (ch6_csr[`MODE] ? (req_r[6] & !ack_o[6]) : 1'b1);
-assign valid[7] = ch7_csr[`CH_EN] & (ch7_csr[`MODE] ? (req_r[7] & !ack_o[7]) : 1'b1);
-assign valid[8] = ch8_csr[`CH_EN] & (ch8_csr[`MODE] ? (req_r[8] & !ack_o[8]) : 1'b1);
-assign valid[9] = ch9_csr[`CH_EN] & (ch9_csr[`MODE] ? (req_r[9] & !ack_o[9]) : 1'b1);
-assign valid[10] = ch10_csr[`CH_EN] & (ch10_csr[`MODE] ? (req_r[10] & !ack_o[10]) : 1'b1);
-assign valid[11] = ch11_csr[`CH_EN] & (ch11_csr[`MODE] ? (req_r[11] & !ack_o[11]) : 1'b1);
-assign valid[12] = ch12_csr[`CH_EN] & (ch12_csr[`MODE] ? (req_r[12] & !ack_o[12]) : 1'b1);
-assign valid[13] = ch13_csr[`CH_EN] & (ch13_csr[`MODE] ? (req_r[13] & !ack_o[13]) : 1'b1);
-assign valid[14] = ch14_csr[`CH_EN] & (ch14_csr[`MODE] ? (req_r[14] & !ack_o[14]) : 1'b1);
-assign valid[15] = ch15_csr[`CH_EN] & (ch15_csr[`MODE] ? (req_r[15] & !ack_o[15]) : 1'b1);
-assign valid[16] = ch16_csr[`CH_EN] & (ch16_csr[`MODE] ? (req_r[16] & !ack_o[16]) : 1'b1);
-assign valid[17] = ch17_csr[`CH_EN] & (ch17_csr[`MODE] ? (req_r[17] & !ack_o[17]) : 1'b1);
-assign valid[18] = ch18_csr[`CH_EN] & (ch18_csr[`MODE] ? (req_r[18] & !ack_o[18]) : 1'b1);
-assign valid[19] = ch19_csr[`CH_EN] & (ch19_csr[`MODE] ? (req_r[19] & !ack_o[19]) : 1'b1);
-assign valid[20] = ch20_csr[`CH_EN] & (ch20_csr[`MODE] ? (req_r[20] & !ack_o[20]) : 1'b1);
-assign valid[21] = ch21_csr[`CH_EN] & (ch21_csr[`MODE] ? (req_r[21] & !ack_o[21]) : 1'b1);
-assign valid[22] = ch22_csr[`CH_EN] & (ch22_csr[`MODE] ? (req_r[22] & !ack_o[22]) : 1'b1);
-assign valid[23] = ch23_csr[`CH_EN] & (ch23_csr[`MODE] ? (req_r[23] & !ack_o[23]) : 1'b1);
-assign valid[24] = ch24_csr[`CH_EN] & (ch24_csr[`MODE] ? (req_r[24] & !ack_o[24]) : 1'b1);
-assign valid[25] = ch25_csr[`CH_EN] & (ch25_csr[`MODE] ? (req_r[25] & !ack_o[25]) : 1'b1);
-assign valid[26] = ch26_csr[`CH_EN] & (ch26_csr[`MODE] ? (req_r[26] & !ack_o[26]) : 1'b1);
-assign valid[27] = ch27_csr[`CH_EN] & (ch27_csr[`MODE] ? (req_r[27] & !ack_o[27]) : 1'b1);
-assign valid[28] = ch28_csr[`CH_EN] & (ch28_csr[`MODE] ? (req_r[28] & !ack_o[28]) : 1'b1);
-assign valid[29] = ch29_csr[`CH_EN] & (ch29_csr[`MODE] ? (req_r[29] & !ack_o[29]) : 1'b1);
-assign valid[30] = ch30_csr[`CH_EN] & (ch30_csr[`MODE] ? (req_r[30] & !ack_o[30]) : 1'b1);
+assign valid[0] = ch0_csr[`WDMA_CH_EN] & (ch0_csr[`WDMA_MODE] ? (req_r[0] & !ack_o[0]) : 1'b1);
+assign valid[1] = ch1_csr[`WDMA_CH_EN] & (ch1_csr[`WDMA_MODE] ? (req_r[1] & !ack_o[1]) : 1'b1);
+assign valid[2] = ch2_csr[`WDMA_CH_EN] & (ch2_csr[`WDMA_MODE] ? (req_r[2] & !ack_o[2]) : 1'b1);
+assign valid[3] = ch3_csr[`WDMA_CH_EN] & (ch3_csr[`WDMA_MODE] ? (req_r[3] & !ack_o[3]) : 1'b1);
+assign valid[4] = ch4_csr[`WDMA_CH_EN] & (ch4_csr[`WDMA_MODE] ? (req_r[4] & !ack_o[4]) : 1'b1);
+assign valid[5] = ch5_csr[`WDMA_CH_EN] & (ch5_csr[`WDMA_MODE] ? (req_r[5] & !ack_o[5]) : 1'b1);
+assign valid[6] = ch6_csr[`WDMA_CH_EN] & (ch6_csr[`WDMA_MODE] ? (req_r[6] & !ack_o[6]) : 1'b1);
+assign valid[7] = ch7_csr[`WDMA_CH_EN] & (ch7_csr[`WDMA_MODE] ? (req_r[7] & !ack_o[7]) : 1'b1);
+assign valid[8] = ch8_csr[`WDMA_CH_EN] & (ch8_csr[`WDMA_MODE] ? (req_r[8] & !ack_o[8]) : 1'b1);
+assign valid[9] = ch9_csr[`WDMA_CH_EN] & (ch9_csr[`WDMA_MODE] ? (req_r[9] & !ack_o[9]) : 1'b1);
+assign valid[10] = ch10_csr[`WDMA_CH_EN] & (ch10_csr[`WDMA_MODE] ? (req_r[10] & !ack_o[10]) : 1'b1);
+assign valid[11] = ch11_csr[`WDMA_CH_EN] & (ch11_csr[`WDMA_MODE] ? (req_r[11] & !ack_o[11]) : 1'b1);
+assign valid[12] = ch12_csr[`WDMA_CH_EN] & (ch12_csr[`WDMA_MODE] ? (req_r[12] & !ack_o[12]) : 1'b1);
+assign valid[13] = ch13_csr[`WDMA_CH_EN] & (ch13_csr[`WDMA_MODE] ? (req_r[13] & !ack_o[13]) : 1'b1);
+assign valid[14] = ch14_csr[`WDMA_CH_EN] & (ch14_csr[`WDMA_MODE] ? (req_r[14] & !ack_o[14]) : 1'b1);
+assign valid[15] = ch15_csr[`WDMA_CH_EN] & (ch15_csr[`WDMA_MODE] ? (req_r[15] & !ack_o[15]) : 1'b1);
+assign valid[16] = ch16_csr[`WDMA_CH_EN] & (ch16_csr[`WDMA_MODE] ? (req_r[16] & !ack_o[16]) : 1'b1);
+assign valid[17] = ch17_csr[`WDMA_CH_EN] & (ch17_csr[`WDMA_MODE] ? (req_r[17] & !ack_o[17]) : 1'b1);
+assign valid[18] = ch18_csr[`WDMA_CH_EN] & (ch18_csr[`WDMA_MODE] ? (req_r[18] & !ack_o[18]) : 1'b1);
+assign valid[19] = ch19_csr[`WDMA_CH_EN] & (ch19_csr[`WDMA_MODE] ? (req_r[19] & !ack_o[19]) : 1'b1);
+assign valid[20] = ch20_csr[`WDMA_CH_EN] & (ch20_csr[`WDMA_MODE] ? (req_r[20] & !ack_o[20]) : 1'b1);
+assign valid[21] = ch21_csr[`WDMA_CH_EN] & (ch21_csr[`WDMA_MODE] ? (req_r[21] & !ack_o[21]) : 1'b1);
+assign valid[22] = ch22_csr[`WDMA_CH_EN] & (ch22_csr[`WDMA_MODE] ? (req_r[22] & !ack_o[22]) : 1'b1);
+assign valid[23] = ch23_csr[`WDMA_CH_EN] & (ch23_csr[`WDMA_MODE] ? (req_r[23] & !ack_o[23]) : 1'b1);
+assign valid[24] = ch24_csr[`WDMA_CH_EN] & (ch24_csr[`WDMA_MODE] ? (req_r[24] & !ack_o[24]) : 1'b1);
+assign valid[25] = ch25_csr[`WDMA_CH_EN] & (ch25_csr[`WDMA_MODE] ? (req_r[25] & !ack_o[25]) : 1'b1);
+assign valid[26] = ch26_csr[`WDMA_CH_EN] & (ch26_csr[`WDMA_MODE] ? (req_r[26] & !ack_o[26]) : 1'b1);
+assign valid[27] = ch27_csr[`WDMA_CH_EN] & (ch27_csr[`WDMA_MODE] ? (req_r[27] & !ack_o[27]) : 1'b1);
+assign valid[28] = ch28_csr[`WDMA_CH_EN] & (ch28_csr[`WDMA_MODE] ? (req_r[28] & !ack_o[28]) : 1'b1);
+assign valid[29] = ch29_csr[`WDMA_CH_EN] & (ch29_csr[`WDMA_MODE] ? (req_r[29] & !ack_o[29]) : 1'b1);
+assign valid[30] = ch30_csr[`WDMA_CH_EN] & (ch30_csr[`WDMA_MODE] ? (req_r[30] & !ack_o[30]) : 1'b1);
 
 always @(posedge clk)
 	ndr_r <= #1 nd_i & req_i;
@@ -399,97 +405,97 @@ always @(posedge clk)
 
 // Ack outputs for HW handshake mode
 always @(posedge clk)
-	ack_o[0] <= #1 (ch_sel == 5'h0) & ch0_csr[`MODE] & de_ack;
+	ack_o[0] <= #1 (ch_sel == 5'h0) & ch0_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[1] <= #1 (ch_sel == 5'h1) & ch1_csr[`MODE] & de_ack;
+	ack_o[1] <= #1 (ch_sel == 5'h1) & ch1_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[2] <= #1 (ch_sel == 5'h2) & ch2_csr[`MODE] & de_ack;
+	ack_o[2] <= #1 (ch_sel == 5'h2) & ch2_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[3] <= #1 (ch_sel == 5'h3) & ch3_csr[`MODE] & de_ack;
+	ack_o[3] <= #1 (ch_sel == 5'h3) & ch3_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[4] <= #1 (ch_sel == 5'h4) & ch4_csr[`MODE] & de_ack;
+	ack_o[4] <= #1 (ch_sel == 5'h4) & ch4_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[5] <= #1 (ch_sel == 5'h5) & ch5_csr[`MODE] & de_ack;
+	ack_o[5] <= #1 (ch_sel == 5'h5) & ch5_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[6] <= #1 (ch_sel == 5'h6) & ch6_csr[`MODE] & de_ack;
+	ack_o[6] <= #1 (ch_sel == 5'h6) & ch6_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[7] <= #1 (ch_sel == 5'h7) & ch7_csr[`MODE] & de_ack;
+	ack_o[7] <= #1 (ch_sel == 5'h7) & ch7_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[8] <= #1 (ch_sel == 5'h8) & ch8_csr[`MODE] & de_ack;
+	ack_o[8] <= #1 (ch_sel == 5'h8) & ch8_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[9] <= #1 (ch_sel == 5'h9) & ch9_csr[`MODE] & de_ack;
+	ack_o[9] <= #1 (ch_sel == 5'h9) & ch9_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[10] <= #1 (ch_sel == 5'ha) & ch10_csr[`MODE] & de_ack;
+	ack_o[10] <= #1 (ch_sel == 5'ha) & ch10_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[11] <= #1 (ch_sel == 5'hb) & ch11_csr[`MODE] & de_ack;
+	ack_o[11] <= #1 (ch_sel == 5'hb) & ch11_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[12] <= #1 (ch_sel == 5'hc) & ch12_csr[`MODE] & de_ack;
+	ack_o[12] <= #1 (ch_sel == 5'hc) & ch12_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[13] <= #1 (ch_sel == 5'hd) & ch13_csr[`MODE] & de_ack;
+	ack_o[13] <= #1 (ch_sel == 5'hd) & ch13_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[14] <= #1 (ch_sel == 5'he) & ch14_csr[`MODE] & de_ack;
+	ack_o[14] <= #1 (ch_sel == 5'he) & ch14_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[15] <= #1 (ch_sel == 5'hf) & ch15_csr[`MODE] & de_ack;
+	ack_o[15] <= #1 (ch_sel == 5'hf) & ch15_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[16] <= #1 (ch_sel == 5'h10) & ch16_csr[`MODE] & de_ack;
+	ack_o[16] <= #1 (ch_sel == 5'h10) & ch16_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[17] <= #1 (ch_sel == 5'h11) & ch17_csr[`MODE] & de_ack;
+	ack_o[17] <= #1 (ch_sel == 5'h11) & ch17_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[18] <= #1 (ch_sel == 5'h12) & ch18_csr[`MODE] & de_ack;
+	ack_o[18] <= #1 (ch_sel == 5'h12) & ch18_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[19] <= #1 (ch_sel == 5'h13) & ch19_csr[`MODE] & de_ack;
+	ack_o[19] <= #1 (ch_sel == 5'h13) & ch19_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[20] <= #1 (ch_sel == 5'h14) & ch20_csr[`MODE] & de_ack;
+	ack_o[20] <= #1 (ch_sel == 5'h14) & ch20_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[21] <= #1 (ch_sel == 5'h15) & ch21_csr[`MODE] & de_ack;
+	ack_o[21] <= #1 (ch_sel == 5'h15) & ch21_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[22] <= #1 (ch_sel == 5'h16) & ch22_csr[`MODE] & de_ack;
+	ack_o[22] <= #1 (ch_sel == 5'h16) & ch22_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[23] <= #1 (ch_sel == 5'h17) & ch23_csr[`MODE] & de_ack;
+	ack_o[23] <= #1 (ch_sel == 5'h17) & ch23_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[24] <= #1 (ch_sel == 5'h18) & ch24_csr[`MODE] & de_ack;
+	ack_o[24] <= #1 (ch_sel == 5'h18) & ch24_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[25] <= #1 (ch_sel == 5'h19) & ch25_csr[`MODE] & de_ack;
+	ack_o[25] <= #1 (ch_sel == 5'h19) & ch25_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[26] <= #1 (ch_sel == 5'h1a) & ch26_csr[`MODE] & de_ack;
+	ack_o[26] <= #1 (ch_sel == 5'h1a) & ch26_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[27] <= #1 (ch_sel == 5'h1b) & ch27_csr[`MODE] & de_ack;
+	ack_o[27] <= #1 (ch_sel == 5'h1b) & ch27_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[28] <= #1 (ch_sel == 5'h1c) & ch28_csr[`MODE] & de_ack;
+	ack_o[28] <= #1 (ch_sel == 5'h1c) & ch28_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[29] <= #1 (ch_sel == 5'h1d) & ch29_csr[`MODE] & de_ack;
+	ack_o[29] <= #1 (ch_sel == 5'h1d) & ch29_csr[`WDMA_MODE] & de_ack;
 
 always @(posedge clk)
-	ack_o[30] <= #1 (ch_sel == 5'h1e) & ch30_csr[`MODE] & de_ack;
+	ack_o[30] <= #1 (ch_sel == 5'h1e) & ch30_csr[`WDMA_MODE] & de_ack;
 
 // Channel Select
 always @(posedge clk or negedge rst)
@@ -1236,7 +1242,7 @@ wb_dma_ch_arb u2(
 	.advance(	next_ch		)
 	);
 
-`ifdef PRI_4
+`ifdef WDMA_PRI_4
 // RR Arbiter for priority 2
 wb_dma_ch_arb u3(
 	.clk(		clk		),
@@ -1255,7 +1261,7 @@ wb_dma_ch_arb u4(
 	);
 `endif
 
-`ifdef PRI_8
+`ifdef WDMA_PRI_8
 // RR Arbiter for priority 2
 wb_dma_ch_arb u3(
 	.clk(		clk		),
@@ -1307,14 +1313,14 @@ wb_dma_ch_arb u8(
 `endif
 
 // Ground unused outputs
-`ifdef PRI_8
+`ifdef WDMA_PRI_8
 // Do nothing
 `else
 assign gnt_p4 = 0;
 assign gnt_p5 = 0;
 assign gnt_p6 = 0;
 assign gnt_p7 = 0;
-`ifdef PRI_4
+`ifdef WDMA_PRI_4
 // Do nothing
 `else
 assign gnt_p2 = 0;
