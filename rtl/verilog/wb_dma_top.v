@@ -37,16 +37,20 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_top.v,v 1.3 2001-09-07 15:34:38 rudi Exp $
+//  $Id: wb_dma_top.v,v 1.4 2001-10-19 04:35:04 rudi Exp $
 //
-//  $Date: 2001-09-07 15:34:38 $
-//  $Revision: 1.3 $
+//  $Date: 2001-10-19 04:35:04 $
+//  $Revision: 1.4 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.3  2001/09/07 15:34:38  rudi
+//
+//               Changed reset to active high.
+//
 //               Revision 1.2  2001/08/15 05:40:30  rudi
 //
 //               - Changed IO names to be more clear.
@@ -97,6 +101,52 @@ module wb_dma_top(clk_i, rst_i,
 
 	inta_o, intb_o
 	);
+
+////////////////////////////////////////////////////////////////////
+//
+// Module Parameters
+//
+
+// chXX_conf = { CBUF, ED, ARS, EN }
+parameter		rf_addr = 0;
+parameter	[1:0]	pri_sel = 2'h0;
+parameter		ch_count = 1;
+parameter	[3:0]	ch0_conf = 4'h1;
+parameter	[3:0]	ch1_conf = 4'h0;
+parameter	[3:0]	ch2_conf = 4'h0;
+parameter	[3:0]	ch3_conf = 4'h0;
+parameter	[3:0]	ch4_conf = 4'h0;
+parameter	[3:0]	ch5_conf = 4'h0;
+parameter	[3:0]	ch6_conf = 4'h0;
+parameter	[3:0]	ch7_conf = 4'h0;
+parameter	[3:0]	ch8_conf = 4'h0;
+parameter	[3:0]	ch9_conf = 4'h0;
+parameter	[3:0]	ch10_conf = 4'h0;
+parameter	[3:0]	ch11_conf = 4'h0;
+parameter	[3:0]	ch12_conf = 4'h0;
+parameter	[3:0]	ch13_conf = 4'h0;
+parameter	[3:0]	ch14_conf = 4'h0;
+parameter	[3:0]	ch15_conf = 4'h0;
+parameter	[3:0]	ch16_conf = 4'h0;
+parameter	[3:0]	ch17_conf = 4'h0;
+parameter	[3:0]	ch18_conf = 4'h0;
+parameter	[3:0]	ch19_conf = 4'h0;
+parameter	[3:0]	ch20_conf = 4'h0;
+parameter	[3:0]	ch21_conf = 4'h0;
+parameter	[3:0]	ch22_conf = 4'h0;
+parameter	[3:0]	ch23_conf = 4'h0;
+parameter	[3:0]	ch24_conf = 4'h0;
+parameter	[3:0]	ch25_conf = 4'h0;
+parameter	[3:0]	ch26_conf = 4'h0;
+parameter	[3:0]	ch27_conf = 4'h0;
+parameter	[3:0]	ch28_conf = 4'h0;
+parameter	[3:0]	ch29_conf = 4'h0;
+parameter	[3:0]	ch30_conf = 4'h0;
+
+////////////////////////////////////////////////////////////////////
+//
+// Module IOs
+//
 
 input		clk_i, rst_i;
 
@@ -156,10 +206,10 @@ input		wb1_rty_i;
 
 // --------------------------------------
 // Misc Signals
-input	[`WDMA_CH_COUNT-1:0]	dma_req_i;
-input	[`WDMA_CH_COUNT-1:0]	dma_nd_i;
-output	[`WDMA_CH_COUNT-1:0]	dma_ack_o;
-input	[`WDMA_CH_COUNT-1:0]	dma_rest_i;
+input	[ch_count-1:0]	dma_req_i;
+input	[ch_count-1:0]	dma_nd_i;
+output	[ch_count-1:0]	dma_ack_o;
+input	[ch_count-1:0]	dma_rest_i;
 output			inta_o;
 output			intb_o;
 
@@ -281,10 +331,12 @@ wire	[30:0]	dma_rest;
 // Misc Logic
 //
 
-assign dma_req[`WDMA_CH_COUNT-1:0] = dma_req_i;
-assign dma_nd[`WDMA_CH_COUNT-1:0] = dma_nd_i;
-assign dma_rest[`WDMA_CH_COUNT-1:0] = dma_rest_i;
-assign dma_ack_o = dma_ack[`WDMA_CH_COUNT-1:0];
+wire	[31:0]	tmp_gnd = 32'h0;
+
+assign dma_req[ch_count-1:0] = dma_req_i;
+assign dma_nd[ch_count-1:0] = dma_nd_i;
+assign dma_rest[ch_count-1:0] = dma_rest_i;
+assign dma_ack_o = {tmp_gnd[31-ch_count:0], dma_ack[ch_count-1:0]};
 
 // --------------------------------------------------
 // This should go in to a separate Pass Through Block
@@ -301,10 +353,39 @@ assign slv1_pt_in  = mast0_pt_out;
 // Modules
 //
 
-
 // DMA Register File
-
-wb_dma_rf	u0(
+wb_dma_rf   #(	ch0_conf,
+		ch1_conf,
+		ch2_conf,
+		ch3_conf,
+		ch4_conf,
+		ch5_conf,
+		ch6_conf,
+		ch7_conf,
+		ch8_conf,
+		ch9_conf,
+		ch10_conf,
+		ch11_conf,
+		ch12_conf,
+		ch13_conf,
+		ch14_conf,
+		ch15_conf,
+		ch16_conf,
+		ch17_conf,
+		ch18_conf,
+		ch19_conf,
+		ch20_conf,
+		ch21_conf,
+		ch22_conf,
+		ch23_conf,
+		ch24_conf,
+		ch25_conf,
+		ch26_conf,
+		ch27_conf,
+		ch28_conf,
+		ch29_conf,
+		ch30_conf)
+		u0(
 		.clk(		clk_i		),
 		.rst(		~rst_i		),
 		.wb_rf_adr(	slv0_adr[9:2]	),
@@ -585,7 +666,39 @@ wb_dma_rf	u0(
 		);
 
 // Channel Select
-wb_dma_ch_sel	u1(
+wb_dma_ch_sel #(pri_sel,
+		ch0_conf,
+		ch1_conf,
+		ch2_conf,
+		ch3_conf,
+		ch4_conf,
+		ch5_conf,
+		ch6_conf,
+		ch7_conf,
+		ch8_conf,
+		ch9_conf,
+		ch10_conf,
+		ch11_conf,
+		ch12_conf,
+		ch13_conf,
+		ch14_conf,
+		ch15_conf,
+		ch16_conf,
+		ch17_conf,
+		ch18_conf,
+		ch19_conf,
+		ch20_conf,
+		ch21_conf,
+		ch22_conf,
+		ch23_conf,
+		ch24_conf,
+		ch25_conf,
+		ch26_conf,
+		ch27_conf,
+		ch28_conf,
+		ch29_conf,
+		ch30_conf)
+		u1(
 		.clk(		clk_i		),
 		.rst(		~rst_i		),
 		.req_i(		dma_req		),
@@ -911,7 +1024,7 @@ wb_dma_de	u2(
 		);
 
 // Wishbone Interface 0
-wb_dma_wb_if	u3(
+wb_dma_wb_if	#(rf_addr)	u3(
 		.clk(		clk_i		),
 		.rst(		~rst_i		),
 		.wbs_data_i(	wb0s_data_i	),
@@ -956,7 +1069,7 @@ wb_dma_wb_if	u3(
 		);
 
 // Wishbone Interface 1
-wb_dma_wb_if	u4(
+wb_dma_wb_if	#(rf_addr) u4(
 		.clk(		clk_i		),
 		.rst(		~rst_i		),
 		.wbs_data_i(	wb1s_data_i	),

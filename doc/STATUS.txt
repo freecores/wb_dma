@@ -13,7 +13,13 @@ if someone else could verify the core as well.
 STATUS
 ======
 
-Latest Release (7/27/2001)
+Latest Release (10/19/2001)
+---------------------------
+- Made the core parameterizable - no more editing of the
+  wb_defines.v file, just pass the configuration to the core
+  when instantiating it !
+
+Third Release (7/27/2001)
 --------------------------
 - Added dma_rest_i. It allows to restart the current transfer at
   the beginning. Beginning is defined as the original values that

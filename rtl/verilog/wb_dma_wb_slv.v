@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_wb_slv.v,v 1.2 2001-08-15 05:40:30 rudi Exp $
+//  $Id: wb_dma_wb_slv.v,v 1.3 2001-10-19 04:35:04 rudi Exp $
 //
-//  $Date: 2001-08-15 05:40:30 $
-//  $Revision: 1.2 $
+//  $Date: 2001-10-19 04:35:04 $
+//  $Revision: 1.3 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.2  2001/08/15 05:40:30  rudi
+//
+//               - Changed IO names to be more clear.
+//               - Uniquifyed define names to be core specific.
+//               - Added Section 3.10, describing DMA restart.
+//
 //               Revision 1.1  2001/07/29 08:57:02  rudi
 //
 //
@@ -82,6 +88,8 @@ module wb_dma_wb_slv(clk, rst,
 	pt_sel, slv_pt_out, slv_pt_in
 
 	);
+
+parameter	rf_addr = 0;
 
 input		clk, rst;
 

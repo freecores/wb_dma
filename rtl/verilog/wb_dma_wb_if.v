@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_wb_if.v,v 1.1 2001-07-29 08:57:02 rudi Exp $
+//  $Id: wb_dma_wb_if.v,v 1.2 2001-10-19 04:35:04 rudi Exp $
 //
-//  $Date: 2001-07-29 08:57:02 $
-//  $Revision: 1.1 $
+//  $Date: 2001-10-19 04:35:04 $
+//  $Revision: 1.2 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.1  2001/07/29 08:57:02  rudi
+//
+//
+//               1) Changed Directory Structure
+//               2) Added restart signal (REST)
+//
 //               Revision 1.2  2001/06/05 10:22:37  rudi
 //
 //
@@ -81,6 +87,8 @@ module wb_dma_wb_if(clk, rst,
 	pt_sel_o, slv_pt_out, slv_pt_in
 
 	);
+
+parameter	rf_addr = 0;
 
 input		clk, rst;
 
@@ -179,7 +187,7 @@ wb_dma_wb_mast	u0(
 		);
 
 
-wb_dma_wb_slv	u1(
+wb_dma_wb_slv #(rf_addr)	u1(
 		.clk(		clk		),
 		.rst(		rst		),
 		.wb_data_i(	wbm_data_i	),
