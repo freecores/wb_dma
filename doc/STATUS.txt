@@ -13,6 +13,20 @@ if someone else could verify the core as well.
 STATUS
 ======
 
+Latest Release (7/27/2001)
+--------------------------
+- Added dma_rest_i. It allows to restart the current transfer at
+  the beginning. Beginning is defined as the original values that
+  where either written to the channel registers, or where fetched
+  from the last external descriptor fetch.
+- Made some minor changes:
+   - Parametarized HW handshake signals (ack, req, nd, rest)
+- There still might be many bugs ! Only little testing has been done !
+- Please do not modify the sources (yet !) ! I'm still working on the core.
+- Things that are not implemented yet, or are known not to work yet:
+  - The DMA currently ignores the RTY_I (retry) input.
+
+
 Second Release (5/6/2001)
 -------------------------
 - Made many, many changes, almost rewrote the entire thing !
