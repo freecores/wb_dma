@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_top.v,v 1.2 2001-08-15 05:40:30 rudi Exp $
+//  $Id: wb_dma_top.v,v 1.3 2001-09-07 15:34:38 rudi Exp $
 //
-//  $Date: 2001-08-15 05:40:30 $
-//  $Revision: 1.2 $
+//  $Date: 2001-09-07 15:34:38 $
+//  $Revision: 1.3 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.2  2001/08/15 05:40:30  rudi
+//
+//               - Changed IO names to be more clear.
+//               - Uniquifyed define names to be core specific.
+//               - Added Section 3.10, describing DMA restart.
+//
 //               Revision 1.1  2001/07/29 08:57:02  rudi
 //
 //
@@ -300,7 +306,7 @@ assign slv1_pt_in  = mast0_pt_out;
 
 wb_dma_rf	u0(
 		.clk(		clk_i		),
-		.rst(		rst_i		),
+		.rst(		~rst_i		),
 		.wb_rf_adr(	slv0_adr[9:2]	),
 		.wb_rf_din(	slv0_dout	),
 		.wb_rf_dout(	slv0_din	),
@@ -581,7 +587,7 @@ wb_dma_rf	u0(
 // Channel Select
 wb_dma_ch_sel	u1(
 		.clk(		clk_i		),
-		.rst(		rst_i		),
+		.rst(		~rst_i		),
 		.req_i(		dma_req		),
 		.ack_o(		dma_ack		),
 		.nd_i(		dma_nd		),
@@ -856,7 +862,7 @@ wb_dma_ch_sel	u1(
 // DMA Engine
 wb_dma_de	u2(
 		.clk(		clk_i		),
-		.rst(		rst_i		),
+		.rst(		~rst_i		),
 		.mast0_go(	mast0_go	),
 		.mast0_we(	mast0_we	),
 		.mast0_adr(	mast0_adr	),
@@ -907,7 +913,7 @@ wb_dma_de	u2(
 // Wishbone Interface 0
 wb_dma_wb_if	u3(
 		.clk(		clk_i		),
-		.rst(		rst_i		),
+		.rst(		~rst_i		),
 		.wbs_data_i(	wb0s_data_i	),
 		.wbs_data_o(	wb0s_data_o	),
 		.wb_addr_i(	wb0_addr_i	),
@@ -952,7 +958,7 @@ wb_dma_wb_if	u3(
 // Wishbone Interface 1
 wb_dma_wb_if	u4(
 		.clk(		clk_i		),
-		.rst(		rst_i		),
+		.rst(		~rst_i		),
 		.wbs_data_i(	wb1s_data_i	),
 		.wbs_data_o(	wb1s_data_o	),
 		.wb_addr_i(	wb1_addr_i	),

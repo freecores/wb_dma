@@ -43,6 +43,8 @@ _TB_=		$(TB_SRC_DIR)/test_bench_top.v		\
 INCDIR="-INCDIR ./$(DUT_SRC_DIR)/ -INCDIR ./$(TB_SRC_DIR)/"
 LOGF=-LOGFILE .nclog
 NCCOMMON=-CDSLIB ncwork/cds.lib -HDLVAR ncwork/hdl.var -NOCOPYRIGHT
+UMC_LIB=/tools/dc_libraries/virtual_silicon/umc_lib.v
+GATE_NETLIST = ../../../syn/out/wb_dma_top_ps.v
 
 ##########################################################################
 #
@@ -65,6 +67,26 @@ sim:
 	@echo "----- Running NCVLOG ... ----------"
 	@$(MAKE) $(MS) vlog				\
 		TARGETS="$(_TARGETS_)"			\
+		TB="$(_TB_)"				\
+		INCDIR=$(INCDIR)			\
+		WAVES="$(WAVES)"
+	@echo ""
+	@echo "----- Running NCELAB ... ----------"
+	@$(MAKE) $(MS) elab				\
+		ACCESS="$(ACCESS)" TOP=$(_TOP_)
+	@echo ""
+	@echo "----- Running NCSIM ... ----------"
+	@$(MAKE) $(MS) ncsim TOP=$(_TOP_)
+	@echo ""
+
+gatew:
+	@$(MAKE) -s gate ACCESS="-ACCESS +r " WAVES="-DEFINE WAVES"
+
+gate:
+	@echo ""
+	@echo "----- Running NCVLOG ... ----------"
+	@$(MAKE) $(MS) vlog				\
+		TARGETS="$(UMC_LIB) $(GATE_NETLIST)"	\
 		TB="$(_TB_)"				\
 		INCDIR=$(INCDIR)			\
 		WAVES="$(WAVES)"

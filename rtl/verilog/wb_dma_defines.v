@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_defines.v,v 1.2 2001-08-15 05:40:30 rudi Exp $
+//  $Id: wb_dma_defines.v,v 1.3 2001-09-07 15:34:38 rudi Exp $
 //
-//  $Date: 2001-08-15 05:40:30 $
-//  $Revision: 1.2 $
+//  $Date: 2001-09-07 15:34:38 $
+//  $Revision: 1.3 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.2  2001/08/15 05:40:30  rudi
+//
+//               - Changed IO names to be more clear.
+//               - Uniquifyed define names to be core specific.
+//               - Added Section 3.10, describing DMA restart.
+//
 //               Revision 1.1  2001/07/29 08:57:02  rudi
 //
 //
@@ -223,7 +229,8 @@
 // the higher will be the initial delay when pass-through mode is selected.
 // Here we look at the top 8 address bit. If they are all 1, the
 // register file is selected. Use this with caution !!!
-`define	WDMA_REG_SEL		(wb_addr_i[31:24] == 8'hff)
+//`define	WDMA_REG_SEL		(wb_addr_i[31:24] == 8'hff)
+`define	WDMA_REG_SEL		(wb_addr_i[31:28] == 4'hb)
 
 
 // CSR Bits

@@ -63,14 +63,14 @@ set_operating_conditions WORST                                  >> $log_file
 
 echo "+++++++++ Setting up Clocks ..."                          >> $log_file
 
-set_drive 0 [find port {*clk}]
+set_drive 0 [find port {clk_i}]
  
 # !!! WISHBONE Clock !!!
 set clock_period 5
-create_clock -period $clock_period clk
-set_clock_skew -uncertainty 0.1 clk
-set_clock_transition 0.5 clk
-set_dont_touch_network clk
+create_clock -period $clock_period clk_i
+set_clock_skew -uncertainty 0.2 clk_i
+set_clock_transition 0.2 clk_i
+set_dont_touch_network clk_i
  
 # !!! Reset !!!
 set_drive 0 [find port {rst*}]
@@ -86,12 +86,13 @@ echo "+++++++++ Setting up IOs ..."                             >> $log_file
 set_driving_cell -cell NAND2D2 -pin Z [all_inputs]              >> $junk_file
 set_load 0.2 [all_outputs]
 
-set_input_delay -max 1 -clock clk [all_inputs]
-set_output_delay -max 1 -clock clk [all_outputs]
+set_input_delay   2.0 -clock clk_i [all_inputs]
+set_output_delay  2.0 -clock clk_i [all_outputs]
 
 # ==============================================
 # Setup Area Constrains
 set_max_area 0.0
+set compile_sequential_area_recovery true 
 
 # ==============================================
 # Force Ultra
@@ -101,17 +102,15 @@ set_ultra_optimization -f
 # Compile Design
 
 echo "+++++++++ Starting Compile ..."                           >> $log_file
-#compile -map_effort medium -area_effort medium -ungroup_all    >> $log_file
-compile -map_effort low -area_effort low                       >> $log_file
-#compile -map_effort high -area_effort high -ungroup_all	>> $log_file
-#compile -map_effort high -area_effort high -auto_ungroup	>> $log_file
+#compile -map_effort low -area_effort low                       >> $log_file
+compile -map_effort high -area_effort high -boundary_optimization -auto_ungroup >> $log_file
 
 # ==============================================
 # Write Out the optimized design
 
 echo "+++++++++ Saving Optimized Design ..."                    >> $log_file
-write_file -format verilog -output $post_syn_verilog_file
-write_file -hierarchy -format db -output $post_comp_db_file
+write_file -hierarchy -format verilog -output $post_syn_verilog_file
+write_file -hierarchy -format db      -output $post_comp_db_file
 
 # ==============================================
 # Create Some Basic Reports

@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: tests.v,v 1.2 2001-08-15 05:40:29 rudi Exp $
+//  $Id: tests.v,v 1.3 2001-09-07 15:34:36 rudi Exp $
 //
-//  $Date: 2001-08-15 05:40:29 $
-//  $Revision: 1.2 $
+//  $Date: 2001-09-07 15:34:36 $
+//  $Revision: 1.3 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.2  2001/08/15 05:40:29  rudi
+//
+//               - Changed IO names to be more clear.
+//               - Uniquifyed define names to be core specific.
+//               - Added Section 3.10, describing DMA restart.
+//
 //               Revision 1.1  2001/07/29 08:57:02  rudi
 //
 //
@@ -76,9 +82,9 @@ $display("*****************************************************");
 $display("*** SW DMA No Buffer Ext. Descr LL ...            ***");
 $display("*****************************************************\n");
 
-rst = 0;
-repeat(10)	@(posedge clk);
 rst = 1;
+repeat(10)	@(posedge clk);
+rst = 0;
 repeat(10)	@(posedge clk);
 
 if(quick)

@@ -37,16 +37,22 @@
 
 //  CVS Log
 //
-//  $Id: test_bench_top.v,v 1.2 2001-08-15 05:40:29 rudi Exp $
+//  $Id: test_bench_top.v,v 1.3 2001-09-07 15:34:36 rudi Exp $
 //
-//  $Date: 2001-08-15 05:40:29 $
-//  $Revision: 1.2 $
+//  $Date: 2001-09-07 15:34:36 $
+//  $Revision: 1.3 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.2  2001/08/15 05:40:29  rudi
+//
+//               - Changed IO names to be more clear.
+//               - Uniquifyed define names to be core specific.
+//               - Added Section 3.10, describing DMA restart.
+//
 //               Revision 1.1  2001/07/29 08:57:02  rudi
 //
 //
@@ -135,7 +141,7 @@ reg	[31:0]	ack_cnt;
 
 
 `define	MEM		32'h0002_0000
-`define	REG_BASE	32'hff00_0000
+`define	REG_BASE	32'hb000_0000
 
 `define	COR		8'h0
 `define	INT_MASKA	8'h4
@@ -199,17 +205,21 @@ initial
 	ack_cnt_clr = 0;
 	error_cnt = 0;
    	clk = 0;
-   	rst = 0;
+   	rst = 1;
 	rest_i = 0;
 
    	repeat(10)	@(posedge clk);
-   	rst = 1;
+   	rst = 0;
    	repeat(10)	@(posedge clk);
 
 	// HERE IS WHERE THE TEST CASES GO ...
 
-if(1)	// Full Regression Run
+if(0)	// Full Regression Run
    begin
+$display(" ......................................................");
+$display(" :                                                    :");
+$display(" :    Long Regression Run ...                         :");
+$display(" :....................................................:");
 	pt10_rd;
 	pt01_wr;
 	pt01_rd;
@@ -226,6 +236,10 @@ if(1)	// Full Regression Run
 else
 if(1)	// Quick Regression Run
    begin
+$display(" ......................................................");
+$display(" :                                                    :");
+$display(" :    Short Regression Run ...                        :");
+$display(" :....................................................:");
 	pt10_rd;
 	pt01_wr;
 	pt01_rd;
@@ -245,8 +259,9 @@ else
 	//
 	// TEST DEVELOPMENT AREA
 	//
+	sw_dma1(3);
 
-	arb_test1;
+	//arb_test1;
 
    	repeat(100)	@(posedge clk);
 
@@ -348,7 +363,7 @@ wb_dma_top	u0(
 
 wb_slv	#(14) s0(
 		.clk(		clk		),
-		.rst(		rst		),
+		.rst(		~rst		),
 		.adr(		wb0_addr_o	),
 		.din(		wb0s_data_o	),
 		.dout(		wb0s_data_i	),
@@ -363,7 +378,7 @@ wb_slv	#(14) s0(
 
 wb_slv	#(14) s1(
 		.clk(		clk		),
-		.rst(		rst		),
+		.rst(		~rst		),
 		.adr(		wb1_addr_o	),
 		.din(		wb1s_data_o	),
 		.dout(		wb1s_data_i	),
@@ -378,7 +393,7 @@ wb_slv	#(14) s1(
 
 wb_mast	m0(
 		.clk(		clk		),
-		.rst(		rst		),
+		.rst(		~rst		),
 		.adr(		wb0_addr_i	),
 		.din(		wb0m_data_o	),
 		.dout(		wb0m_data_i	),
@@ -393,7 +408,7 @@ wb_mast	m0(
 
 wb_mast	m1(
 		.clk(		clk		),
-		.rst(		rst		),
+		.rst(		~rst		),
 		.adr(		wb1_addr_i	),
 		.din(		wb1m_data_o	),
 		.dout(		wb1m_data_i	),
