@@ -37,16 +37,20 @@
 
 //  CVS Log
 //
-//  $Id: wb_dma_ch_rf.v,v 1.3 2001-10-19 04:35:04 rudi Exp $
+//  $Id: wb_dma_ch_rf.v,v 1.4 2001-10-30 02:06:17 rudi Exp $
 //
-//  $Date: 2001-10-19 04:35:04 $
-//  $Revision: 1.3 $
+//  $Date: 2001-10-30 02:06:17 $
+//  $Revision: 1.4 $
 //  $Author: rudi $
 //  $Locker:  $
 //  $State: Exp $
 //
 // Change History:
 //               $Log: not supported by cvs2svn $
+//               Revision 1.3  2001/10/19 04:35:04  rudi
+//
+//               - Made the core parameterized
+//
 //               Revision 1.2  2001/08/15 05:40:30  rudi
 //
 //               - Changed IO names to be more clear.
@@ -202,9 +206,9 @@ wire		ptr_inv;
 
 assign ch_adr0		= CH_EN ? {ch_adr0_r, 2'h0}   : 32'h0;
 assign ch_adr1		= CH_EN ? {ch_adr1_r, 2'h0}   : 32'h0;
-assign ch_am0		= CH_EN ? {ch_am0_r, 4'h0}    : 32'h0;
-assign ch_am1		= CH_EN ? {ch_am1_r, 4'h0}    : 32'h0;
-assign sw_pointer	= CH_EN ? {sw_pointer_r,2'h0} : 32'h0;
+assign ch_am0		= (CH_EN & HAVE_CBUF) ? {ch_am0_r, 4'h0}    : 32'hffff_fff0;
+assign ch_am1		= (CH_EN & HAVE_CBUF) ? {ch_am1_r, 4'h0}    : 32'hffff_fff0;
+assign sw_pointer	= (CH_EN & HAVE_CBUF) ? {sw_pointer_r,2'h0} : 32'h0;
 
 assign pointer		= CH_EN ? {pointer_r, 3'h0, ptr_valid} : 32'h0;
 assign pointer_s	= CH_EN ? {pointer_sr, 4'h0}  : 32'h0;
@@ -387,7 +391,7 @@ always @(posedge clk or negedge rst)
 	   end
 
 // Interrupt Output
-assign int = |(int_src_r & ch_csr_r3);
+assign int = |(int_src_r & ch_csr_r3) & CH_EN;
 
 // ---------------------------------------------------
 // TXZS
@@ -447,9 +451,9 @@ always @(posedge clk)
 // ---------------------------------------------------
 // AM0
 always @(posedge clk or negedge rst)
-	if(!rst)			ch_am0_r <= #1 28'hfffffff;
+	if(!rst)		ch_am0_r <= #1 28'hfffffff;
 	else
-	if(ch_am0_we & HAVE_CBUF)	ch_am0_r <= #1 wb_rf_din[31:4];
+	if(ch_am0_we)		ch_am0_r <= #1 wb_rf_din[31:4];
 
 // ---------------------------------------------------
 // ADR1
@@ -493,7 +497,7 @@ always @(posedge clk or negedge rst)
 assign cmp_adr = ch_csr[2] ? ch_adr1[30:2] : ch_adr0[30:2];
 
 always @(posedge clk)
-	ch_dis <= #1 (CH_EN & HAVE_CBUF) ? ((sw_pointer[30:2] == cmp_adr) & sw_pointer[31]) : 1'b0;
+	ch_dis <= #1 CH_EN & HAVE_CBUF & (sw_pointer[30:2] == cmp_adr) & sw_pointer[31];
 
 endmodule
 
